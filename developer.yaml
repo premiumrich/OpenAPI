@@ -3,8 +3,7 @@ info:
   version: 1.4
   title: Trulioo API
   description: |
-    To run tests transactions on our trial endpoint in postman:
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/run-collection/a58f438d101278e2bc62)
+    Trulioo API
 servers:
   - url: https://gateway.trulioo.com/trial
 x-samples-languages:
