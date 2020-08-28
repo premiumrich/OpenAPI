@@ -32,29 +32,29 @@ jobs:
           path: generated-sdk
 
   create-pull-request:
-    needs: generate
+    needs: generate-code
     runs-on: ubuntu-latest
     steps:
       - name: Download the default branch of remote repository
         uses: actions/checkout@v2
         with:
           repository: Trulioo/sdk-js
-          path: current_code
+          path: current-code
 
       - name: Download the artifact to the correct path
         uses: actions/download-artifact@v2
         with:
           name: artifact
-          path: new_code
+          path: new-code
 
       - name: code update
         run: |
-          rsync -a --delete new_code/ current_code/javascript
+          rsync -a --delete new-code/ current-code/javascript
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.LANGUAGE_REPO_TOKEN }}
           branch-suffix: timestamp
-          path: current_code
+          path: current-code
           branch: auto-generated/cr
