@@ -23,14 +23,16 @@ jobs:
 
       - name: generate code
         run: |
-          mkdir new_javascript
-          java -jar ./bin/utils/openapi-generator-cli.jar generate -i developer.yaml -g javascript -o new_javascript
+          mkdir generated-sdk
+          java -jar ./bin/utils/openapi-generator-cli.jar generate -i developer.yaml -g javascript -o generated-sdk
+          sed -i -e 's/trulioo_sdk/trulioo-sdk/g; s/GIT_USER_ID/GIT-USER-ID/g; s/GIT_REPO_ID/GIT-REPO-ID/g;' generated-sdk/README.md
+          sed -i -e 's/"license": "Unlicense"/"license": "Apache-2.0"/g; s/"name": "trulioo_sdk"/"name": "trulioo-sdk"/g; s/"description": "Trulioo_SDK"/"description": "Trulioo JavaScript SDK"/g;' generated-sdk/package.json
 
       - name: Save the artifact
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: new_javascript
+          path: generated-sdk
 
   pull_request:
     needs: generate
@@ -58,3 +60,4 @@ jobs:
           token: ${{ secrets.LANGUAGE_REPO_TOKEN }}
           branch-suffix: timestamp
           path: current_code
+          branch: auto-generated/cr
