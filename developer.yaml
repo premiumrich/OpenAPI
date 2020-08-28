@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
   version: 1.4
-  title: Trulioo API
+  title: Trulioo SDK
   description: |
-    Trulioo API
+    Trulioo SDK
 servers:
   - url: https://gateway.trulioo.com/trial
 x-samples-languages:

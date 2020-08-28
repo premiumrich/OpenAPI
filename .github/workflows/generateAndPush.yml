@@ -3,14 +3,14 @@
 # Reference:
 # - https://github.com/ad-m/github-push-action
 
-name: Generate and PR
+name: Generate code and create pull request
 
 on:
   pull_request:
     branches: [master]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  generate:
+  generate-code:
     runs-on: ubuntu-latest
     steps:
       - name: Print tool versions
@@ -23,16 +23,15 @@ jobs:
 
       - name: generate code
         run: |
-          mkdir new_javascript
-          java -jar ./bin/utils/openapi-generator-cli.jar generate -i developer.yaml -g javascript -o new_javascript
+          ./generate.sh
 
       - name: Save the artifact
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: new_javascript
+          path: generated-sdk
 
-  pull_request:
+  create-pull-request:
     needs: generate
     runs-on: ubuntu-latest
     steps:
@@ -58,3 +57,4 @@ jobs:
           token: ${{ secrets.LANGUAGE_REPO_TOKEN }}
           branch-suffix: timestamp
           path: current_code
+          branch: auto-generated/cr
