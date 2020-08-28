@@ -1,1 +1,1 @@
-Trulioo OpenAPI
+Trulioo OpenAPI 1.x
