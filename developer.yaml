@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.2.0
+  version: 1.3.0
   title: Trulioo_identity_verification
   description: |
     To run tests transactions on our trial endpoint in postman:
