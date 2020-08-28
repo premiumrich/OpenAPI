@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+# Reference:
+# - https://github.com/ad-m/github-push-action
+
+name: Generate and PR
+
+on:
+  pull_request:
+    branches: [master]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print tool versions
+        run: |
+          npm -v
+          node -v
+
+      - name: Checkout yaml for code generation
+        uses: actions/checkout@v2
+
+      - name: generate code
+        run: |
+          mkdir new_javascript
+          java -jar ./bin/utils/openapi-generator-cli.jar generate -i developer.yaml -g javascript -o new_javascript
+
+      - name: Save the artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: new_javascript
+
+  pull_request:
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the default branch of remote repository
+        uses: actions/checkout@v2
+        with:
+          repository: Trulioo/sdk-js
+          path: current_code
+
+      - name: Download the artifact to the correct path
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: new_code
+
+      - name: code update
+        run: |
+          rsync -a --delete new_code/ current_code/javascript
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.LANGUAGE_REPO_TOKEN }}
+          branch-suffix: timestamp
+          path: current_code
