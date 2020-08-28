@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.4
+  version: 1.5
   title: Trulioo SDK
   description: |
     Trulioo SDK
