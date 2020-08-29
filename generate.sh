@@ -20,3 +20,5 @@ sed -i -e "s/Please follow the \[installation\]/## Getting Started \\`echo -e '\
 sed -i -e '/^## Documentation for Models/,/^## Documentation for Authorization/d' generated-sdk/README.md
 sed -i -e '/Finally, you need to build the module.*/{N;N;N;N;N;d;}' generated-sdk/README.md
 sed -i -e '/^$/N;/^\n$/D' generated-sdk/README.md
+sed -i -e 's/countryCode_example/COUNTRY-CODE/g' generated-sdk/README.md
+sed -i -e "s/'Identity Verification'/Identity Verification/g" generated-sdk/README.md
