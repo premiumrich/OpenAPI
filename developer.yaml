@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  version: 0.1.0
+  version: 0.2.0
   title: Trulioo SDK
   description: |
     Trulioo SDK
 servers:
-  - url: https://gateway.trulioo.com/trial
+  - url: https://gateway.trulioo.com
 x-samples-languages:
   - curl
   - node
@@ -13,11 +13,13 @@ x-samples-languages:
   - ruby
   - python
 paths:
-  /connection/v1/testauthentication:
+  "/{mode}/connection/v1/testauthentication":
     get:
       tags:
         - Connection
       summary: Test Authentication
+      parameters:
+        - $ref: "#/components/parameters/mode"
       description: This method enables you to check if your credentials are valid. You will
         need to use ApiKeyAuth authentication to ensure a successful response.
       operationId: TestAuthentication
@@ -49,7 +51,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/countrycodes/{configurationName}":
+  "/{mode}/configuration/v1/countrycodes/{configurationName}":
     get:
       tags:
         - Configuration
@@ -58,6 +60,7 @@ paths:
         verification. It returns an array of Alpha2 Country Codes"
       operationId: GetCountryCodes
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: configurationName
           in: path
           description: The product configuration. Currently "Identity Verification" for all products.
@@ -107,7 +110,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/testentities/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/testentities/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -115,6 +118,7 @@ paths:
       description: Gets the test entities configured for your product and country.
       operationId: GetTestEntities
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: configurationName
           in: path
           description: The product configuration. Currently "Identity Verification" for all
@@ -208,7 +212,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/fields/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/fields/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -216,6 +220,7 @@ paths:
       description: "Generates json schema for the API, the schema is dynamic based on the country and configuration you are using json-schema.org"
       operationId: GetFields
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: countryCode
           in: path
           description: "Country alpha2 code"
@@ -529,7 +534,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/recommendedfields/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/recommendedfields/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -537,6 +542,7 @@ paths:
       description: "Generates json schema for the API, the schema is dynamic based on the recommendedFields country and account you are using.\r\nhttp://json-schema.org/documentation.html"
       operationId: GetRecommendedFields
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: countryCode
           in: path
           description: "Country alpha2 code"
@@ -759,7 +765,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/consents/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/consents/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -770,6 +776,7 @@ paths:
         element from the string collection will lead to a 1005 service error"
       operationId: GetConsents
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: countryCode
           in: path
           description: "Country alpha2 code"
@@ -829,7 +836,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/detailedConsents/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/detailedConsents/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -841,6 +848,7 @@ paths:
         to a 1005 service error."
       operationId: GetDetailedConsents
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: countryCode
           in: path
           description: Call CountryCodes to get the countries available to you.
@@ -895,7 +903,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/countrysubdivisions/{countryCode}":
+  "/{mode}/configuration/v1/countrysubdivisions/{countryCode}":
     get:
       tags:
         - Configuration
@@ -904,6 +912,7 @@ paths:
         matches ISO 3166-2
       operationId: GetCountrySubdivisions
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: countryCode
           in: path
           description: "Country alpha2 code"
@@ -967,7 +976,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/configuration/v1/datasources/{configurationName}/{countryCode}":
+  "/{mode}/configuration/v1/datasources/{configurationName}/{countryCode}":
     get:
       tags:
         - Configuration
@@ -975,6 +984,7 @@ paths:
       description: Gets datasource groups configured for your product and country.
       operationId: GetDatasources
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: configurationName
           in: path
           description: The product configuration. Currently "Identity Verification" for all
@@ -1073,7 +1083,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  /verifications/v1/verify:
+  "/{mode}/verifications/v1/verify":
     post:
       tags:
         - Verifications
@@ -1088,6 +1098,8 @@ paths:
         with any other data will result in no matches being
         found."
       operationId: Verify
+      parameters:
+        - $ref: "#/components/parameters/mode"
       requestBody:
         content:
           application/json:
@@ -1220,7 +1232,7 @@ paths:
           description: An error happened on the server without a specific message.
       security:
         - ApiKeyAuth: []
-  "/verifications/v1/transactionrecord/{id}":
+  "/{mode}/verifications/v1/transactionrecord/{id}":
     get:
       tags:
         - Verifications
@@ -1231,6 +1243,7 @@ paths:
         the verify request."
       operationId: GetTransactionRecord
       parameters:
+        - $ref: "#/components/parameters/mode"
         - name: id
           in: path
           description: The TransactionRecordID from the Verify response, this will be a GUID
@@ -1499,6 +1512,15 @@ components:
       type: apiKey
       in: header
       name: x-trulioo-api-key
+  parameters:
+    mode: 
+      in: path
+      name: mode
+      description: free trial or live
+      schema:
+        type: string
+        default: trial
+      required: true
   schemas:
     ServiceError:
       description: ""
