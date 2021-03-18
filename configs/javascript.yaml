@@ -1,0 +1,13 @@
+'!include': ./shared/common.yaml
+
+packageName: trulioo-sdk
+moduleName: TruliooSDK
+appName: Trulioo SDK
+projectDescription: Trulioo JavaScript SDK
+licenseName: Apache-2.0
+gitRepoId: sdk-js
+artifactVersion: 1.0.0
+generatorName: javascript
+outputDir: ./dist/sdk-js/
+templateDir: ./templates/javascript/
+ignoreFileOverride: ./configs/openapi-generator-ignore/javascript.openapi-generator-ignore

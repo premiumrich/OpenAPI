@@ -1,0 +1,4 @@
+**/.openapi-generator-ignore
+**/git_push.sh
+**/.travis.yml
+**/mocha.opts

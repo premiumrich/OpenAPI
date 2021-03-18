@@ -1,0 +1,29 @@
+<?php
+{{#models}}
+{{#model}}
+
+{{>partial_header}}
+namespace {{invokerPackage}}\Test\Model;
+
+use PHPUnit\Framework\TestCase;
+use OpenAPI\Client\Model\{{classname}};
+
+class {{classname}}Test extends TestCase
+{
+    private {{classname}} ${{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+
+    public function setUp(): void
+    {
+        $this->{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}([]);
+    }
+{{#vars}}
+
+    public function testProperty{{nameInCamelCase}}()
+    {
+        $this->{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}->set{{nameInCamelCase}}(VALUE);
+        $this->assertEquals(VALUE, $this->{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}->get{{nameInCamelCase}}());
+    }
+{{/vars}}
+}
+{{/model}}
+{{/models}}

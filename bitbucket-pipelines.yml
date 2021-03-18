@@ -1,0 +1,43 @@
+pipelines:
+  default:
+    - step: &generate-sdks
+        name: Generate SDKs
+        image: timbru31/java-node:8-jdk-14
+        caches:
+          - node
+        script:
+          - npm install
+          - npm run generate
+        artifacts:
+          - dist/**
+    - parallel:
+        - step: &run-php-tests
+            name: Run PHP tests
+            image: php:7.4
+            caches:
+              - composer
+            script:
+              - apt-get update && apt-get install -y unzip git
+              - pecl install pcov && docker-php-ext-enable pcov
+              - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              - cd dist/sdk-php/
+              - composer install
+              - bash run-tests.sh
+  branches:
+    master:
+      - step: *generate-sdks
+      - parallel:
+          - step: *run-php-tests
+      - step:
+          name: Deploy to QA branch
+          deployment: QA
+          image: atlassian/default-image:2
+          script:
+            - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+            - git fetch && git checkout qa
+            - git rebase master
+            - git push origin qa
+    qa:
+      - step: *generate-sdks
+      - parallel:
+          - step: *run-php-tests

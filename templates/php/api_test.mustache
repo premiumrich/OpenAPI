@@ -1,0 +1,49 @@
+<?php
+
+{{>partial_header}}
+namespace {{invokerPackage}}\Test\Api;
+
+use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
+
+use OpenAPI\Client\Api\{{classname}};
+use OpenAPI\Client\Configuration;
+use OpenAPI\Client\ApiException;
+
+$BASE_URI = 'https://gateway.trulioo.com/';
+
+{{#operations}}class {{classname}}Test extends TestCase
+{
+    private {{classname}} ${{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+    private array $history;
+	private MockHandler $mock;
+
+    public function setUp(): void
+    {
+        $configuration = Configuration::getDefaultConfiguration()->setApiKey('x-trulioo-api-key', 'test-api-key');
+
+		$this->history = [];
+		$middleware = Middleware::history($this->history);
+		$this->mock = new MockHandler([]);
+		$handlerStack = HandlerStack::create($this->mock);
+		$handlerStack->push($middleware);
+
+		$this->{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(new Client(['handler' => $handlerStack]), $configuration);
+
+		$this->mock->reset();
+    }
+    {{#operation}}
+
+    public function test{{vendorExtensions.x-test-operation-id}}()
+    {
+        // TODO: implement
+        $this->markTestIncomplete('Not implemented');
+    }
+    {{/operation}}
+}
+{{/operations}}

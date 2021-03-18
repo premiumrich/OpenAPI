@@ -1,0 +1,143 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-family: sans-serif;
+  color: #212b36;
+}
+
+body {
+  max-width: 1024px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+hr {
+  margin: 2rem 0;
+}
+
+p {
+  line-height: 1.5;
+}
+
+header {
+  margin: 2rem 0;
+}
+
+.header-description {
+  margin-top: 1.5rem;
+  color: #627487;
+}
+
+.product-heading {
+  padding-bottom: 1rem;
+}
+
+section {
+  padding: 2rem 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-number {
+  width: 25px;
+  height: 25px;
+  margin-right: 0.5rem;
+  line-height: 1.6;
+  background-color: #1ba5ea;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.section-title {
+  color: #343a40;
+}
+
+.section-description {
+  color: #627487;
+}
+
+.codeblock {
+  color: #f8f9fa;
+  margin-top: 1.25rem;
+}
+
+.codeblock > :first-child {
+  border-radius: 8px 8px 0px 0px;
+}
+
+.codeblock > :last-child {
+  border-radius: 0px 0px 8px 8px;
+}
+
+.codeblock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 52px;
+  padding: 10px 25px;
+  background-color: #222;
+}
+
+.codeblock-header-title {
+  font-size: 1rem;
+}
+
+.codeblock-header-button {
+  padding: 7px 12px 7px 12px;
+  font-size: 0.875rem;
+  background-color: #fff;
+  color: #222;
+  border: 1px solid #222;
+  border-radius: 5px;
+}
+
+.codeblock-header-button:hover {
+  background-color: #e5e5e5;
+}
+
+.codeblock-content {
+  padding: 20px 20px 10px 20px;
+  background-color: #292c33;
+  scrollbar-width: thin;
+}
+
+.codeblock-content ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.codeblock-content ::-webkit-scrollbar-thumb {
+  background-color: #4d4d4f;
+  border-radius: 5px;
+}
+
+.codeblock-content pre {
+  white-space: nowrap;
+}
+
+.codeblock-content code {
+  padding-bottom: 20px;
+  font-size: 1rem;
+  background-color: #292c33;
+}

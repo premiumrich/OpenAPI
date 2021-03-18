@@ -1,0 +1,10 @@
+composer.phar
+vendor/
+
+composer.lock
+
+.php_cs.cache
+.phpunit.result.cache
+
+clover.xml
+coverage/

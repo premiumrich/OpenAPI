@@ -1,0 +1,13 @@
+'!include': ./shared/common.yaml
+
+packageName: trulioo/trulioo-sdk
+projectDescription: Trulioo PHP SDK
+licenseName: Apache-2.0
+gitRepoId: sdk-php
+artifactVersion: 1.0.0
+generatorName: php
+outputDir: ./dist/sdk-php/
+templateDir: ./templates/php/
+ignoreFileOverride: ./configs/openapi-generator-ignore/php.openapi-generator-ignore
+files:
+  run-tests.sh: {}

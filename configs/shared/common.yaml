@@ -1,0 +1,5 @@
+inputSpec: ./developer.yaml
+gitUserId: Trulioo
+globalProperties:
+  apiTests: false
+  modelTests: false

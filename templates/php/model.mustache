@@ -1,0 +1,32 @@
+<?php
+{{#models}}
+{{#model}}
+
+{{>partial_header}}
+namespace {{modelPackage}};
+{{^isEnum}}
+{{^parentSchema}}
+
+use \ArrayAccess;
+{{/parentSchema}}
+{{/isEnum}}
+use \{{invokerPackage}}\ObjectSerializer;
+
+/**
+ * {{classname}}
+ *
+ * @category Class
+{{#description}}
+ * @description {{description}}
+{{/description}}
+ * @package  {{invokerPackage}}
+ * @author   Trulioo
+ * @link     https://github.com/Trulioo/sdk-php
+{{^isEnum}}
+ * @implements \ArrayAccess<TKey, TValue>
+ * @template TKey int|null
+ * @template TValue mixed|null  
+{{/isEnum}}
+ */
+{{#isEnum}}{{>model_enum}}{{/isEnum}}{{^isEnum}}{{>model_generic}}{{/isEnum}}
+{{/model}}{{/models}}

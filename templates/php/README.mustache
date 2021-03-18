@@ -1,0 +1,124 @@
+# {{projectDescription}}
+> {{packageName}}
+
+- API version: {{appVersion}}
+{{#artifactVersion}}
+- Package version: {{artifactVersion}}
+{{/artifactVersion}}
+{{^hideGenerationTimestamp}}
+- Build date: {{generatedDate}}
+{{/hideGenerationTimestamp}}
+- Build package: {{generatorClass}}
+
+## Installation
+
+### With [Composer](http://getcomposer.org/)
+
+PHP 7.2 or later is required.
+
+- If Composer is available globally on your system, run the following command in the root directory of your project:
+
+  `composer require {{packageName}}`
+
+- Add the following to `composer.json`, then run `composer install`
+
+    ```json
+    {
+      "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/{{gitUserId}}/{{gitRepoId}}.git"
+        }
+      ],
+      "require": {
+        "{{packageName}}": "*@dev"
+      }
+    }
+    ```
+
+## Sample Application
+
+Check out our sample application for this SDK in the
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/sample-app) folder.
+
+## Getting Started
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
+{{> php_doc_auth_partial}}
+$apiInstance = new {{invokerPackage}}\Api\{{classname}}(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(){{#hasAuthMethods}},
+    $config{{/hasAuthMethods}}
+);
+{{#allParams}}${{paramName}} = {{{example}}}; // {{{dataType}}}{{#description}} | {{{description}}}{{/description}}
+{{/allParams}}
+
+try {
+    {{#returnType}}$result = {{/returnType}}$apiInstance->{{{operationId}}}({{#allParams}}${{paramName}}{{^-last}}, {{/-last}}{{/allParams}});{{#returnType}}
+    print_r($result);{{/returnType}}
+} catch (Exception $e) {
+    echo 'Exception when calling {{classname}}->{{operationId}}: ', $e->getMessage(), PHP_EOL;
+}
+{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
+```
+
+## Testing
+
+```bash
+composer install
+./run-tests.sh
+```
+
+## Documentation for APIs
+
+All URIs are relative to *{{basePath}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**]({{apiDocPath}}/{{classname}}.md#{{operationIdLowerCase}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+## Documentation for Models
+
+{{#models}}{{#model}}- [{{{classname}}}]({{modelDocPath}}/{{{classname}}}.md){{/model}}
+{{/models}}
+
+## Documentation for Authorization
+{{^authMethods}}
+
+All endpoints do not require authorization.
+{{/authMethods}}
+{{#authMethods}}
+{{#last}} Authentication schemes defined for the API:{{/last}}
+### {{{name}}}
+{{#isApiKey}}
+
+- **Type**: API key
+- **API key parameter name**: {{{keyParamName}}}
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+{{/isApiKey}}
+{{#isBasic}}
+{{#isBasicBasic}}
+
+- **Type**: HTTP basic authentication
+{{/isBasicBasic}}
+{{#isBasicBearer}}
+
+- **Type**: Bearer authentication{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}
+{{/isBasicBearer}}
+{{/isBasic}}
+{{#isOAuth}}
+
+- **Type**: `OAuth`
+- **Flow**: `{{{flow}}}`
+- **Authorization URL**: `{{{authorizationUrl}}}`
+- **Scopes**: {{^scopes}}N/A{{/scopes}}
+{{#scopes}}
+    - **{{{scope}}}**: {{{description}}}
+{{/scopes}}
+{{/isOAuth}}
+{{/authMethods}}
