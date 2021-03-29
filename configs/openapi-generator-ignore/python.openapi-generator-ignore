@@ -1,0 +1,5 @@
+**/.openapi-generator-ignore
+**/git_push.sh
+**/.gitlab-ci.yml
+**/.travis.yml
+**/setup.cfg

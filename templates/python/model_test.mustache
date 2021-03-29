@@ -1,0 +1,33 @@
+import unittest
+import pook
+
+{{#models}}
+{{#model}}
+{{#imports}}
+{{{.}}}
+{{/imports}}
+from {{modelPackage}}.{{classFilename}} import {{classname}}
+from trulioo_sdk.exceptions import ApiAttributeError, ApiTypeError
+from trulioo_sdk.configuration import Configuration
+
+
+class Test{{classname}}(unittest.TestCase):
+    def test_{{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}}(self):
+        {{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}} = {{classname}}()
+    
+    def test_{{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}}_unknown_arg(self):
+        with self.assertRaises(ApiTypeError):
+            {{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}} = {{classname}}("test")
+
+    def test_{{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}}_discard_kwarg(self):
+        {{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}} = {{classname}}(
+            _configuration=Configuration(discard_unknown_keys=True), abc="unknown"
+        )
+        with self.assertRaises(ApiAttributeError):
+            {{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}}.abc
+
+{{/model}}
+{{/models}}
+
+if __name__ == "__main__":
+    unittest.main()

@@ -8,6 +8,7 @@ specFile="developer.yaml"
 declare -A sdkLangs=(
     ["javascript"]="JavaScript"
     ["php"]="PHP"
+    ["python"]="Python"
 )
 
 for lang in "${!sdkLangs[@]}"; do
@@ -22,8 +23,10 @@ for lang in "${!sdkLangs[@]}"; do
         "$diff" == *$testsFolder* \
     ]]; then
         echo "Detected changes that affect ${sdkLangs[$lang]} SDK"
-        versionLineDiffCount=$(git diff --staged $base $configFile | grep -c "artifactVersion")
-        if [[ $versionLineDiffCount > 1 ]]; then
+        configDiff=$(git diff --staged $base $configFile)
+        isNewSDK=$([[ "$configDiff" == *"new file"* ]] && echo 1 || echo 0)
+        versionLineDiffCount=$(grep -c "artifactVersion" <<< $configDiff)
+        if [[ $isNewSDK == 1 || $versionLineDiffCount > 1 ]]; then
             echo "Version of ${sdkLangs[$lang]} SDK has already been updated"
         else
             currentVersion=$(grep "artifactVersion" $configFile | sed "s/artifactVersion: //")

@@ -10,7 +10,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run update-versions && npm run check-versions"
+      "pre-commit": "npm run update-versions"
     }
   },
   "devDependencies": {

@@ -43,3 +43,22 @@ jobs:
       - name: Run tests
         working-directory: dist/sdk-php/
         run: bash run-tests.sh
+  run-python-tests:
+    name: Run Python tests
+    needs: generate-sdks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve generated SDKs
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist/
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install tox
+        run: pip install tox
+      - name: Run tests
+        working-directory: dist/sdk-python/
+        run: tox

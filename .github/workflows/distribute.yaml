@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sdk-repo: ['sdk-php']
+        sdk-repo: ['sdk-php', 'sdk-python']
     steps:
       - name: Retrieve generated SDKs
         uses: actions/download-artifact@v2

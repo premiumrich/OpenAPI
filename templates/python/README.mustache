@@ -1,0 +1,115 @@
+# {{appName}}
+> {{packageName}}
+
+- API version: {{appVersion}}
+{{#artifactVersion}}
+- Package version: {{artifactVersion}}
+{{/artifactVersion}}
+- Build package: {{generatorClass}}
+
+## Installation & Usage
+
+Python 3.6 or later is required.
+
+### With [pip](https://pip.pypa.io/en/stable/)
+
+```shell
+pip install {{packageName}}
+```
+
+### With [Setuptools](http://pypi.python.org/pypi/setuptools)
+
+In the root of this SDK, run:
+
+```shell
+python setup.py install --user
+```
+
+## Sample Application
+
+Check out our sample application for this SDK in the
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/sample-app) folder.
+
+
+## Getting Started
+
+Example of test_authentication:
+
+```python
+from trulioo_sdk import Configuration, ApiException
+from trulioo_sdk.apis import ConnectionApi
+
+# See configuration.py for a list of all supported configuration parameters
+configuration = trulioo_sdk.Configuration()
+configuration.api_key['ApiKeyAuth'] = 'X_TRULIOO_API_KEY'
+
+# Enter context with an instance of the API client
+with trulioo_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api = ConnectionApi(api_client)
+    # Define parameters
+    mode = "trial"
+    # Call API
+    try:
+        result = api.test_authentication(mode)
+    except ApiException as e:
+        print("Exception when calling ConnectionApi.test_authentication: %s\n" % e)
+```
+
+## Testing
+
+This project uses [tox](https://tox.readthedocs.io/en/latest/) for consistent testing. First, run `pip install tox`.
+
+```bash
+tox
+```
+
+## Documentation for APIs
+
+All URIs are relative to *{{basePath}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationIdLowerCase}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+## Documentation For Models
+
+{{#models}}{{#model}} - [{{{classname}}}]({{modelDocPath}}{{{classname}}}.md)
+{{/model}}{{/models}}
+## Documentation For Authorization
+{{^authMethods}}
+ All endpoints do not require authorization.
+{{/authMethods}}
+{{#authMethods}}
+{{#last}} Authentication schemes defined for the API:{{/last}}
+## {{{name}}}
+{{#isApiKey}}
+
+- **Type**: API key
+- **API key parameter name**: {{{keyParamName}}}
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+{{/isApiKey}}
+{{#isBasic}}
+{{#isBasicBasic}}
+
+- **Type**: HTTP basic authentication
+{{/isBasicBasic}}
+{{#isBasicBearer}}
+
+- **Type**: Bearer authentication{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}
+{{/isBasicBearer}}
+{{#isHttpSignature}}
+
+- **Type**: HTTP signature authentication
+{{/isHttpSignature}}
+{{/isBasic}}
+{{#isOAuth}}
+
+- **Type**: OAuth
+- **Flow**: {{{flow}}}
+- **Authorization URL**: {{{authorizationUrl}}}
+- **Scopes**: {{^scopes}}N/A{{/scopes}}
+{{#scopes}} - **{{{scope}}}**: {{{description}}}
+{{/scopes}}
+{{/isOAuth}}
+{{/authMethods}}

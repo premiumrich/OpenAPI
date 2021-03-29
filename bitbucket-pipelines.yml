@@ -23,21 +23,47 @@ pipelines:
               - cd dist/sdk-php/
               - composer install
               - bash run-tests.sh
+        - step: &run-python-tests
+            name: Run Python tests
+            image: python:3.9.1
+            caches:
+              - pip
+            script:
+              - pip install tox
+              - cd dist/sdk-python/
+              - tox
+    - step: &check-versions
+        name: Check SDK versions
+        image: atlassian/default-image:2
+        script:
+          - npm run check-versions
   branches:
     master:
       - step: *generate-sdks
       - parallel:
           - step: *run-php-tests
+          - step: *run-python-tests
+      - step: *check-versions
       - step:
           name: Deploy to QA branch
           deployment: QA
+          trigger: manual
           image: atlassian/default-image:2
           script:
             - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
             - git fetch && git checkout qa
-            - git rebase master
-            - git push origin qa
+            - git reset --hard master
+            - git push --force origin qa
     qa:
       - step: *generate-sdks
       - parallel:
           - step: *run-php-tests
+          - step: *run-python-tests
+      - step: *check-versions
+      - step:
+          name: Deploy to GitHub
+          deployment: GitHub
+          trigger: manual
+          image: atlassian/default-image:2
+          script:
+            - 'false'

@@ -1,0 +1,38 @@
+import unittest
+import pook
+
+from trulioo_sdk.configuration import Configuration
+from trulioo_sdk.api_client import ApiClient
+from {{apiPackage}}.{{classVarName}} import {{classname}}
+
+BASE_URI = "https://gateway.trulioo.com"
+
+
+class {{#operations}}Test{{classname}}(unittest.TestCase):
+    def setUp(self):
+        configuration = Configuration(api_key={"ApiKeyAuth": "test-api-key"})
+        self.api = {{classname}}(api_client=ApiClient(configuration=configuration))
+
+    {{#operation}}
+    @pook.on
+    def test_{{operationId}}(self):
+        mock = pook.mock(
+            url=BASE_URI + "",
+            method="",
+            headers={"x-trulioo-api-key": "test-api-key"},
+            reply=200,
+            response_json={},
+        )
+        result = self.api.{{operationId}}(mode="trial")
+        
+        assert mock.calls == 1
+        assert result == {}
+
+   {{/operation}}
+    def test_no_api_client(self):
+        api = {{classname}}()
+        assert isinstance(api.api_client, ApiClient)
+{{/operations}}
+
+if __name__ == "__main__":
+    unittest.main()

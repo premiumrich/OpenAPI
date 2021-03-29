@@ -3,10 +3,16 @@
 function getPublishedVersions() {
     case $1 in
         javascript)
-            echo $(npm view $2 versions 2>&1)
+            echo $(curl -s "https://registry.npmjs.com/$2" | \
+                jq --compact-output ".versions | keys" 2>/dev/null)
             ;;
         php)
-            echo $(composer show $2 --available 2>&1 | grep "versions")
+            echo $(curl -s "https://repo.packagist.org/p2/$2.json" | \
+                jq --compact-output ".packages[] | map(.version)" 2>/dev/null)
+            ;;
+        python)
+            echo $(curl -s "https://pypi.org/pypi/$2/json" | \
+                jq --compact-output '.releases | keys' 2>/dev/null)
             ;;
     esac
 }
@@ -14,10 +20,16 @@ function getPublishedVersions() {
 function getLatestVersion() {
     case $1 in
         javascript)
-            echo $(npm view $2 version 2>&1)
+            echo $(curl -s "https://registry.npmjs.com/$2" | \
+                jq --raw-output ".\"dist-tags\".latest" 2>/dev/null)
             ;;
         php)
-            echo $(getPublishedVersions "php" $2 | cut -d "," -f3 | xargs)
+            echo $(curl -s "https://repo.packagist.org/p2/$2.json" | \
+                jq --raw-output ".packages[][0].version" 2>/dev/null)
+            ;;
+        python)
+            echo $(curl -s "https://pypi.org/pypi/$2/json" | \
+                jq --raw-output '.info.version' 2>/dev/null)
             ;;
     esac
 }
@@ -25,6 +37,7 @@ function getLatestVersion() {
 declare -A sdkLangs=(
     ["javascript"]="JavaScript"
     ["php"]="PHP"
+    ["python"]="Python"
 )
 
 status=0
