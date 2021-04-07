@@ -1,0 +1,20 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run Java tests
+        image: maven:3.6.3-jdk-8
+        caches:
+          - maven
+        script:
+          - mvn -B test
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-java master:master
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-java --tags

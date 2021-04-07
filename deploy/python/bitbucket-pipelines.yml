@@ -1,0 +1,21 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run Python tests
+        image: python:3.9.1
+        caches:
+          - pip
+        script:
+          - pip install tox
+          - tox
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-python master:master
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-python --tags

@@ -1,12 +1,11 @@
 #!/bin/bash
 
-declare -A sdkLangs=(
-    ["php"]="PHP"
-    ["python"]="Python"
-)
+echo "[PHP SDK] Copying supporting files to dist..."
+mkdir -p dist/sdk-php/test/ && cp -r tests/php/. dist/sdk-php/test/
+mkdir -p dist/sdk-php/sample-app/ && cp -r sample-apps/php/. dist/sdk-php/sample-app/
+cp -r deploy/php/. dist/sdk-php/
 
-for lang in "${!sdkLangs[@]}"; do
-    echo "Copying ${sdkLangs[$lang]} tests and sample app to dist..."
-    mkdir -p dist/sdk-$lang/test/ && cp -r tests/$lang/* dist/sdk-$lang/test/
-    mkdir -p dist/sdk-$lang/sample-app/ && cp -r sample-apps/$lang/* dist/sdk-$lang/sample-app/
-done
+echo "[Python SDK] Copying supporting files to dist..."
+mkdir -p dist/sdk-python/test/ && cp -r tests/python/. dist/sdk-python/test/
+mkdir -p dist/sdk-python/sample-app/ && cp -r sample-apps/python/. dist/sdk-python/sample-app/
+cp -r deploy/python/. dist/sdk-python/

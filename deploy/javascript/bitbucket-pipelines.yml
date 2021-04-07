@@ -1,0 +1,20 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run JavaScript tests
+        image: node:14.16
+        caches:
+          - node
+        script:
+          - 'true'
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-javascript master:master
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-javascript --tags

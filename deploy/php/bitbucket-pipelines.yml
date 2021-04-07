@@ -1,0 +1,24 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run PHP tests
+        image: php:7.4
+        caches:
+          - composer
+        script:
+          - apt-get update && apt-get install -y unzip git
+          - pecl install pcov && docker-php-ext-enable pcov
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer install
+          - bash run-tests.sh
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-php master:master
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-php --tags
