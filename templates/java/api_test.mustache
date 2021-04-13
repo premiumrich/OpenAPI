@@ -1,0 +1,122 @@
+package {{package}};
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.*;
+import okhttp3.mockwebserver.*;
+import okhttp3.HttpUrl;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+
+import {{invokerPackage}}.ApiClient;
+import {{invokerPackage}}.ApiException;
+import {{invokerPackage}}.SuccessfulCallback;
+import {{invokerPackage}}.auth.ApiKeyAuth;
+{{#imports}}import {{import}};
+{{/imports}}
+
+public class {{classname}}Test {
+    private MockWebServer server;
+    private {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+
+    /* Setup */
+
+    @BeforeEach
+    public void beforeEach() throws IOException {
+        server = new MockWebServer();
+        server.start();
+
+        HttpUrl url = server.url("/");
+        ApiClient apiClient = new ApiClient().setBasePath(url.scheme() + "://" + url.host() + ":" + url.port());
+
+        ApiKeyAuth auth = (ApiKeyAuth) apiClient.getAuthentication("ApiKeyAuth");
+        auth.setApiKey("test-api-key");
+
+        {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(apiClient);
+    }
+
+    @AfterEach
+    public void afterEach() throws IOException {
+        server.shutdown();
+    }
+
+    /* Test constructor */
+
+    @Test
+    public void test{{classname}}() {
+        {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}();
+        ApiClient apiClient = new ApiClient().setBasePath("https://abcd");
+        {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.setApiClient(apiClient);
+
+        assertEquals(apiClient, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.getApiClient());
+    }
+    {{#operations}}
+    {{#operation}}
+
+    /* Test {{operationId}} */
+
+    @Test
+    public void test{{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}Success() throws InterruptedException {
+        JsonObject body = new JsonObject();
+        // JsonArray body = new JsonArray();
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(body.toString()));
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(body.toString()));
+
+        {{#returnType}}
+        {{{returnType}}} expected = new {{{returnType}}}();
+        {{/returnType}}
+
+        try {
+            {{#returnType}}{{{returnType}}} result = {{/returnType}}{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+            RecordedRequest request = server.takeRequest();
+
+            {{#returnType}}
+            assertEquals(expected, result);
+            {{/returnType}}
+            assertEquals("GET ENDPOINT HTTP/1.1", request.getRequestLine());
+            assertEquals("test-api-key", request.getHeaders().get("x-trulioo-api-key"));
+        } catch (ApiException e) {
+            fail("Unexpected ApiException");
+        }
+
+        try {
+            {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}Async({{#allParams}}{{paramName}}, {{/allParams}}new TestApiCallback{{#returnType}}<{{{returnType}}}>{{/returnType}}() {
+                public void onSuccess({{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Object{{/returnType}} resultAsync, int status, Map<String, List<String>> headers) {
+                    assertEquals(expected, resultAsync);
+                }
+            });
+            RecordedRequest requestAsync = server.takeRequest();
+
+            assertEquals("GET ENDPOINT HTTP/1.1", requestAsync.getRequestLine());
+            assertEquals("test-api-key", requestAsync.getHeaders().get("x-trulioo-api-key"));
+        } catch (ApiException e) {
+            fail("Unexpected ApiException");
+        }
+    }
+
+    @Test
+    public void test{{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}Unauthorized() throws InterruptedException {
+        server.enqueue(new MockResponse().setResponseCode(401));
+
+        ApiException e = assertThrows(ApiException.class, () -> {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}}));
+        assertEquals(401, e.getCode());
+        assertEquals("Client Error", e.getMessage());
+    }
+
+    @Test
+    public void test{{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}NullParams() {
+        {{#allParams}}
+        ApiException e{{-index}} = assertThrows(ApiException.class, () -> {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}}));
+        assertEquals("Missing the required parameter '{{paramName}}' when calling {{operationId}}(Async)", e{{-index}}.getMessage());
+        {{^-last}}
+
+        {{/-last}}
+        {{/allParams}}
+    }
+    {{/operation}}
+    {{/operations}}
+}

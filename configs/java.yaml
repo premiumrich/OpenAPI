@@ -1,0 +1,16 @@
+'!include': ./shared/common.yaml
+
+artifactVersion: 1.0.0
+generatorName: java
+artifactId: trulioo-sdk
+artifactDescription: Trulioo Java SDK
+groupId: com.trulioo
+invokerPackage: com.trulioo.sdk
+apiPackage: com.trulioo.sdk.api
+modelPackage: com.trulioo.sdk.model
+gitRepoId: sdk-java
+dateLibrary: java8
+hideGenerationTimestamp: true
+outputDir: ./dist/sdk-java/
+templateDir: ./templates/java/
+ignoreFileOverride: ./configs/openapi-generator-ignore/java.openapi-generator-ignore

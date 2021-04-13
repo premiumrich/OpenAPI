@@ -1,0 +1,58 @@
+package {{package}};
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.*;
+
+public class {{classname}}Test {
+    {{#models}}
+    {{#model}}
+    private {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+
+    @BeforeEach
+    public void beforeEach() {
+        {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}();
+    }
+    {{#allVars}}
+
+    @Test
+    public void test{{#lambda.titlecase}}{{name}}{{/lambda.titlecase}}() {
+        {{{datatypeWithEnum}}} {{name}} = REPLACE;
+        {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{setter}}({{name}});
+
+        assertEquals({{name}}, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{getter}}());
+        assertEquals({{name}}, new {{classname}}().{{name}}({{name}}).{{getter}}());
+    }
+    {{/allVars}}
+
+    {{#allVars}}
+    {{#-first}}
+    @Test
+    public void testEquals() {
+        {{{datatypeWithEnum}}} {{name}} = REPLACE;
+        {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1 = new {{classname}}().{{name}}({{name}});
+
+        assertEquals({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1);
+        assertEquals({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1, new {{classname}}().{{name}}({{name}}));
+        assertNotEquals({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1, new {{classname}}().{{name}}({{name}} + "1"));
+        assertNotEquals({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1, null);
+    }
+
+    @Test
+    public void testHashcode() {
+        {{{datatypeWithEnum}}} {{name}} = REPLACE;
+
+        assertEquals(new {{classname}}().{{name}}({{name}}).hashCode(), new {{classname}}().{{name}}({{name}}).hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        {{{datatypeWithEnum}}} {{name}} = REPLACE;
+
+        assertEquals(new {{classname}}().{{name}}({{name}}).toString(), new {{classname}}().{{name}}({{name}}).toString());
+    }
+    {{/-first}}
+    {{/allVars}}
+    {{/model}}
+    {{/models}}
+}

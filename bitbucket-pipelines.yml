@@ -11,13 +11,6 @@ pipelines:
         artifacts:
           - dist/**
     - parallel:
-        - step: &check-versions
-            name: Check SDK versions
-            image: atlassian/default-image:2
-            artifacts:
-              download: false
-            script:
-              - npm run check-versions
         - step: &run-php-tests
             name: Run PHP tests
             image: php:7.4
@@ -39,104 +32,41 @@ pipelines:
               - pip install tox
               - cd dist/sdk-python/
               - tox
+        - step: &run-java-tests
+            name: Run Java tests
+            image: maven:3.6.3-jdk-8
+            caches:
+              - maven
+            script:
+              - cd dist/sdk-java/
+              - mvn -B test
   branches:
     master:
       - step: *generate-sdks
       - parallel:
-          - step: *check-versions
           - step: *run-php-tests
           - step: *run-python-tests
+          - step: *run-java-tests
       - step:
           name: Deploy to QA Branch
           deployment: QA Branch
           trigger: manual
           image: atlassian/default-image:2
           script:
-            - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-            - git fetch && git checkout qa
-            - git reset --hard master
-            - git push --force origin qa
+            - git push origin master:qa
     qa:
       - step: *generate-sdks
       - parallel:
-          - step: *check-versions
           - step: *run-php-tests
           - step: *run-python-tests
+          - step: *run-java-tests
       - step:
           name: Deploy to SDK Repos
           deployment: SDK Repos
           trigger: manual
           image: atlassian/default-image:2
           script:
-            - git config --global user.name "Trulioo" && git config --global user.email "support@trulioo.com"
-            - >
-              BITBUCKET_TOKEN=$(curl https://bitbucket.org/site/oauth2/access_token --silent --request POST \
-                  --user "${BITBUCKET_CLIENT_KEY}:${BITBUCKET_CLIENT_SECRET}" \
-                  --data grant_type=client_credentials --data scopes="pullrequest:write" \
-                  | jq --raw-output ".access_token")
-            - BITBUCKET_COMMIT_SHORT=$(echo ${BITBUCKET_COMMIT} | cut -c1-7)
-            - >
-              declare -A SDK_LANGS=(
-                  ["PHP"]="php"
-              )
-            - >
-              for LANG in "${!SDK_LANGS[@]}"; do
-                  SDK_REPO_NAME="sdk-${SDK_LANGS[$LANG]}"
-
-                  echo "[$LANG SDK] Cloning ${SDK_REPO_NAME} from Bitbucket..."
-                  git clone -q "https://x-token-auth:${BITBUCKET_TOKEN}@bitbucket.org/trulioo-rnd/$SDK_REPO_NAME" \
-                      "${BITBUCKET_CLONE_DIR}/../target/${SDK_REPO_NAME}/"
-                  SDK_BRANCH_NAME="automated-update-${BITBUCKET_COMMIT_SHORT}-${BITBUCKET_BUILD_NUMBER}"
-                  cd "${BITBUCKET_CLONE_DIR}/../target/${SDK_REPO_NAME}/"
-
-                  if ! [[ $(git branch --list master) ]]; then
-                      echo "[$LANG SDK] Master branch does not exist. Pushing initial empty commit..."
-                      git checkout -q -b master
-                      git commit -q --allow-empty -m "Initial commit"
-                      git push -q -u origin master \
-                          || (echo "[$LANG SDK] Unable to push to master (are branch permissions configured?)";
-                              exit 1)
-                  fi
-
-                  echo "[$LANG SDK] Committing changes to branch ${SDK_BRANCH_NAME}..."
-                  git checkout -q -b "${SDK_BRANCH_NAME}"
-                  rsync --archive --delete --exclude=".git/" \
-                      "${BITBUCKET_CLONE_DIR}/dist/${SDK_REPO_NAME}/" \
-                      "${BITBUCKET_CLONE_DIR}/../target/${SDK_REPO_NAME}/"
-                  git add .
-                  SDK_VERSION=$(grep "artifactVersion" \
-                      "${BITBUCKET_CLONE_DIR}/configs/${SDK_LANGS[$LANG]}.yaml" | sed "s/artifactVersion: //")
-                  COMMIT_MSG=$'Automated update to '"${SDK_VERSION}"$'\n\n'
-                  COMMIT_MSG="${COMMIT_MSG}"$'Contains changes from this recent commit in Trulioo/OpenAPI:\n\n'
-                  COMMIT_MSG="${COMMIT_MSG}$(git -C ${BITBUCKET_CLONE_DIR} log -1 --pretty=medium)"
-                  git commit -q -m "${COMMIT_MSG}"
-
-                  echo "[$LANG SDK] Tagging commit as ${SDK_VERSION}..."
-                  git tag "${SDK_VERSION}"
-
-                  echo "[$LANG SDK] Pushing branch and tag..."
-                  git push -q -u origin HEAD
-                  git push -q origin "${SDK_VERSION}"
-
-                  echo "[$LANG SDK] Creating pull request..."
-                  DEFAULT_REVIEWERS=$(curl \
-                      "https://api.bitbucket.org/2.0/repositories/trulioo-rnd/${SDK_REPO_NAME}/default-reviewers" \
-                      --silent --fail --show-error --request GET \
-                      --header "Authorization: Bearer ${BITBUCKET_TOKEN}" \
-                      | jq '[.values[] | select(.uuid != "'"${BITBUCKET_STEP_TRIGGERER_UUID}"'")] | map({uuid})')
-                  curl "https://api.bitbucket.org/2.0/repositories/trulioo-rnd/${SDK_REPO_NAME}/pullrequests" \
-                      --silent --fail --show-error --request POST \
-                      --header "Authorization: Bearer ${BITBUCKET_TOKEN}" \
-                      --header "Content-Type: application/json" \
-                      --data '{
-                          "title": "Automated update to '"${SDK_VERSION}"'",
-                          "source": { "branch": { "name": "'"${SDK_BRANCH_NAME}"'" } },
-                          "destination": { "branch": { "name": "master" } },
-                          "reviewers": '"${DEFAULT_REVIEWERS}"'
-                      }' \
-                      || echo "[$LANG SDK] Error occurred when automatically creating pull request"
-                  echo
-              done
+            - bash scripts/deploy-sdk-repos.sh
       - step:
           name: Deploy to GitHub Repo
           deployment: GitHub Repo

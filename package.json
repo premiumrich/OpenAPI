@@ -4,13 +4,11 @@
   "scripts": {
     "generate": "openapi-generator-cli batch ./configs/*.yaml",
     "generate:clean": "rm -rf dist/ && npm run generate",
-    "postgenerate": "bash scripts/bundle.sh",
-    "update-versions": "bash scripts/update-versions.sh",
-    "check-versions": "bash scripts/check-versions.sh"
+    "postgenerate": "bash scripts/bundle.sh"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run update-versions"
+      "pre-commit": "bash scripts/update-versions.sh"
     }
   },
   "devDependencies": {

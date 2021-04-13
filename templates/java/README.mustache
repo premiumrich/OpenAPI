@@ -1,0 +1,123 @@
+# {{artifactDescription}}
+
+- API version: {{appVersion}}
+{{#artifactVersion}}
+- Package version: {{artifactVersion}}
+{{/artifactVersion}}
+- Build package: {{generatorClass}}
+
+## Installation
+
+Java 1.8 or later is required.
+
+### With [Maven](https://maven.apache.org/)
+
+Add this dependency to your project's POM:
+
+```xml
+<dependency>
+    <groupId>{{{groupId}}}</groupId>
+    <artifactId>{{{artifactId}}}</artifactId>
+    <version>{{{artifactVersion}}}</version>
+</dependency>
+```
+
+### With JAR
+
+Build the JAR with [Maven](https://maven.apache.org/) by running:
+
+```shell
+mvn clean package
+```
+
+Then manually install the following JARs:
+
+- `target/{{{artifactId}}}-{{{artifactVersion}}}.jar`
+- `target/lib/*.jar`
+
+## Sample Application
+
+Check out our sample application for this SDK in the
+[sample-app](https://github.com/Trulioo/sdk-java/sample-app) folder.
+
+## Getting Started
+
+It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment to avoid any potential issues.
+
+```java
+import {{{invokerPackage}}}.ApiClient;
+import {{{invokerPackage}}}.ApiException;
+import {{{invokerPackage}}}.Configuration;
+import {{{invokerPackage}}}.auth.ApiKeyAuth;
+import {{{apiPackage}}}.ConnectionApi;
+
+public class TestAuthenticationExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        ApiKeyAuth auth = (ApiKeyAuth) defaultClient.getAuthentication("ApiKeyAuth");
+        auth.setApiKey("X-TRULIOO-API-KEY");
+
+        ConnectionApi connectionApi = new ConnectionApi(defaultClient);
+        String mode = "trial";
+
+        try {
+            String result = connectionApi.testAuthentication(mode);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ConnectionApi#testAuthentication");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+
+}
+```
+
+## Testing
+
+With [Maven](https://maven.apache.org/), run:
+
+```bash
+mvn clean test
+```
+
+## Documentation for APIs
+
+All URIs are relative to *{{basePath}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{commonPath}}{{path}} | {{#summary}}{{summary}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+## Documentation for Models
+
+{{#models}}{{#model}} - [{{classname}}]({{modelDocPath}}{{classname}}.md)
+{{/model}}{{/models}}
+## Documentation for Authorization
+
+{{^authMethods}}All endpoints do not require authorization.
+{{/authMethods}}
+{{#authMethods}}### {{name}}
+
+{{#isApiKey}}
+- **Type**: API key
+- **API key parameter name**: {{keyParamName}}
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+{{/isApiKey}}
+{{#isBasic}}
+
+- **Type**: HTTP basic authentication
+{{/isBasic}}
+{{#isOAuth}}
+
+- **Type**: OAuth
+- **Flow**: {{flow}}
+- **Authorization URL**: {{authorizationUrl}}
+- **Scopes**: {{^scopes}}N/A{{/scopes}}
+{{#scopes}}  - {{scope}}: {{description}}
+{{/scopes}}
+{{/isOAuth}}
+{{/authMethods}}

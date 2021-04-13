@@ -1,0 +1,5 @@
+secrets:
+  x-trulioo-api-key: X-TRULIOO-API-KEY
+
+server:
+  port: 8080

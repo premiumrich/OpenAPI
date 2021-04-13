@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trulioo Java SDK App</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/railscasts.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>Trulioo Java SDK Sample Application</h1>
+    <p class="header-description">This is a sample application that utilizes the
+      <a href="https://github.com/Trulioo/sdk-java" target="_blank" rel="noreferrer">Trulioo Java SDK</a>.
+      Please visit the SDK respository for documentation on installation, usage, and supported functions.
+      <br><br>
+      Input your x-trulioo-api-key into line 2 of src/main/resources/application.yml
+    </p>
+  </header>
+  <hr />
+  <div>
+    <h2 class="product-heading">Identity Verification Steps</h2>
+    <section>
+      <div class="section-header">
+        <span class="section-number">1</span>
+        <h3 class="section-title">Authentication</h3>
+      </div>
+      <p class="section-description">
+        You can use this function to check whether your API key is working. The only thing you need to provide is a
+        mode: free, trial, or live.
+      </p>
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Method</span>
+          <button type="submit" id="test-authentication" class="codeblock-header-button">
+            ▶ Run
+          </button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;"><code class="lang-java">
+            String mode = "trial";
+            <br><br>
+            String result = new ConnectionApi().testAuthentication(mode);
+          </code></pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-java" id="test-authentication-response"></code></pre>
+        </div>
+      </article>
+    </section>
+    <section>
+      <div class="section-header">
+        <span class="section-number">2</span>
+        <h3 class="section-title">Countries</h3>
+      </div>
+      <p class="section-description">
+        Trulioo's API is structured to make calls by country. If you're not sure what countries are configured for your
+        account, Trulioo provides this function to retrieve this information at any time. Simply run the following to
+        receive the full list of country codes available for your account.
+      </p>
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Method</span>
+          <button type="submit" id="get-countries" class="codeblock-header-button">
+            ▶ Run
+          </button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;"><code class="lang-java">
+            String mode = "trial";
+            <br>
+            String configurationName = "Identity Verification";
+            <br><br>
+            List&lt;String&gt; result = new ConfigurationApi().getCountryCodes(mode, configurationName);
+          </code></pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-java" id="get-countries-response"></code></pre>
+        </div>
+      </article>
+    </section>
+    <section>
+      <div class="section-header">
+        <span class="section-number">3</span>
+        <h3 class="section-title">Test Entities</h3>
+      </div>
+      <p class="section-description">
+        Now that you know what country codes are valid for your account, you can see what test entities exist for each
+        of these countries.
+        <br>
+        These test entities can be used to test verification in step 5. They only serve as demo data, and different ones
+        exist for every country.
+      </p>
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Method</span>
+          <button type="submit" id="get-test-entities" class="codeblock-header-button">
+            ▶ Run
+          </button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;"><code class="lang-java">
+            String mode = "trial";
+            <br>
+            String configurationName = "Identity Verification";
+            <br>
+            String countryCode = "US";
+            <br><br>
+            List&lt;TestEntityDataFields&gt; result = new ConfigurationApi().getTestEntities(mode, configurationName, countryCode);
+          </code></pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-java" id="get-test-entities-response"></code></pre>
+        </div>
+      </article>
+    </section>
+    <section>
+      <div class="section-header">
+        <span class="section-number">4</span>
+        <h3 class="section-title">Consents</h3>
+      </div>
+      <p class="section-description">
+        It is the responsibility of the developer to ensure any necessary consents are being collected from the
+        individual being verified. See Trulioo's Terms and Conditions.
+        <br><br>
+        Due to the nature of some of our data sources, you may need to obtain consent from your customer for their data
+        to be sent to that particular source. You may or may not be configured to use any of these data sources, so it
+        is recommended to run this function for all of the countries obtained in step 2. This will give you a list of
+        data sources that require additional consents in each country. If applicable, you can obtain these special
+        consents from your customer, and then provide them in the consentForDataSources field of the verify function.
+      </p>
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Method</span>
+          <button type="submit" id="get-consents" class="codeblock-header-button">
+            ▶ Run
+          </button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;"><code class="lang-java">
+            String mode = "trial";
+            <br>
+            String configurationName = "Identity Verification";
+            <br>
+            String countryCode = "US";
+            <br><br>
+            List&lt;String&gt; result = new ConfigurationApi().getConsents(mode, configurationName, countryCode);
+          </code></pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-java" id="get-consents-response"></code></pre>
+        </div>
+      </article>
+    </section>
+    <section>
+      <div class="section-header">
+        <span class="section-number">5</span>
+        <h3 class="section-title">Verify</h3>
+      </div>
+      <p class="section-description">
+        Once steps 1 through 4 have been completed, you should have everything needed to carry out a verify request.
+        Using one of the country codes from step 2, one of the test entities from step 3, and any necessary consents
+        from step 4, you can now run the following request.
+      </p>
+      <br>
+      <h4>
+        Explanation of additional fields:
+      </h4>
+      <br>
+      <p class="section-description">
+        acceptTruliooTermsAndConditions (bool): This flag indicates that you accept Trulioo Terms and Conditions.
+        The verification request will be executed only if the value of this field is passed as True.
+        <br><br>
+        cleansedAddress (bool): Trulioo provides a service to check address data and ensure it is correct and all
+        necessary address fields are provided. In general, these cleansed addresses have a higher likelihood of
+        producing a match result. Set this field to True to receive address cleanse information.
+        <br><br>
+        configurationName (str): When verifying an identity, this should be set to "Identity Verification"
+      </p>
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Method</span>
+          <button type="submit" id="verify" class="codeblock-header-button">
+            ▶ Run
+          </button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;"><code class="lang-java">
+            String mode = "trial";
+            <br>
+            VerifyRequest verifyRequest = new VerifyRequest(); // Initialize with appropriate data
+            <br><br>
+            VerifyResult result = new VerificationsApi().verify(mode, verifyRequest);
+          </code></pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-java" id="verify-response"></code></pre>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+
+    const testAuthenticationButton = document.getElementById('test-authentication');
+    const testAuthenticationResponse = document.getElementById('test-authentication-response');
+    testAuthenticationButton.addEventListener('click', async (event) => {
+      testAuthenticationResponse.innerHTML = '';
+      testAuthenticationButton.innerHTML = 'Running...';
+      const response = await fetch('/test-authentication', {
+        method: 'GET'
+      });
+      testAuthenticationResponse.innerHTML = await response.text();
+      hljs.highlightBlock(testAuthenticationResponse);
+      testAuthenticationButton.innerHTML = '▶ Run';
+    });
+
+    const getCountriesButton = document.getElementById('get-countries');
+    const getCountriesResponse = document.getElementById('get-countries-response');
+    getCountriesButton.addEventListener('click', async (event) => {
+      getCountriesResponse.innerHTML = '';
+      getCountriesButton.innerHTML = 'Running...';
+      const response = await fetch('/get-countries', {
+        method: 'GET'
+      });
+      getCountriesResponse.innerHTML = await response.text();
+      hljs.highlightBlock(getCountriesResponse);
+      getCountriesButton.innerHTML = '▶ Run';
+    });
+
+    const getTestEntitiesButton = document.getElementById('get-test-entities');
+    const getTestEntitiesResponse = document.getElementById('get-test-entities-response');
+    getTestEntitiesButton.addEventListener('click', async (event) => {
+      getTestEntitiesResponse.innerHTML = '';
+      getTestEntitiesButton.innerHTML = 'Running...';
+      const response = await fetch('/get-test-entities', {
+        method: 'POST',
+        body: JSON.stringify({
+          countryCode: 'AU'
+        })
+      });
+      getTestEntitiesResponse.innerHTML = await response.text();
+      hljs.highlightBlock(getTestEntitiesResponse);
+      getTestEntitiesButton.innerHTML = '▶ Run';
+    });
+
+    const getConsentsButton = document.getElementById('get-consents');
+    const getConsentsResponse = document.getElementById('get-consents-response');
+    getConsentsButton.addEventListener('click', async (event) => {
+      getConsentsResponse.innerHTML = '';
+      getConsentsButton.innerHTML = 'Running...';
+      const response = await fetch('/get-consents', {
+        method: 'POST',
+        body: JSON.stringify({
+          countryCode: 'AU'
+        })
+      });
+      getConsentsResponse.innerHTML = await response.text();
+      hljs.highlightBlock(getConsentsResponse);
+      getConsentsButton.innerHTML = '▶ Run';
+    });
+
+    const verifyButton = document.getElementById('verify');
+    const verifyResponse = document.getElementById('verify-response');
+    verifyButton.addEventListener('click', async (event) => {
+      verifyResponse.innerHTML = '';
+      verifyButton.innerHTML = 'Running...';
+      const data = {
+        countryCode: 'AU',
+        firstGivenName: 'J',
+        middleName: 'Henry',
+        firstSurName: 'Smith',
+        yearOfBirth: 1983,
+        monthOfBirth: 3,
+        dayOfBirth: 5,
+        buildingNumber: '10',
+        streetName: 'Lawford',
+        streetType: 'St',
+        postalCode: '3108',
+        telephone: '03 9896 8785',
+        emailAddress: 'testpersonAU@gdctest.com',
+        passportNumber: 'N1236548',
+      };
+      const response = await fetch('/verify', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      verifyResponse.innerHTML = await response.text();
+      hljs.highlightBlock(verifyResponse);
+      verifyButton.innerHTML = '▶ Run';
+    });
+  </script>
+</body>
+
+</html>

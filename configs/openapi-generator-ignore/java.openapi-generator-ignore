@@ -1,0 +1,10 @@
+**/sdk-java/api/
+**/sdk-java/gradle/
+**/sdk-java/build.sbt
+**/sdk-java/.openapi-generator-ignore
+**/sdk-java/git_push.sh
+**/sdk-java/.travis.yml
+**/sdk-java/gradlew
+**/sdk-java/gradlew.bat
+**/sdk-java/gradle.properties
+**/sdk-java/src/main/AndroidManifest.xml
