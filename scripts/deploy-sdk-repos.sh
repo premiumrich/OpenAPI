@@ -54,12 +54,14 @@ if [[ $CI != true ]]; then
     exit 1
 fi
 
-if [[ $(git branch --show-current) != "qa" ]]; then
+if [[ $(git rev-parse --abbrev-ref HEAD) != "qa" ]]; then
     echo "Not deploying from QA branch! Exiting..."
     exit 1
 fi
 
-if ! [[ $(git merge-base --is-ancestor origin/master qa) ]]; then
+git fetch origin master:refs/remotes/origin/master
+
+if ! (git merge-base --is-ancestor origin/master qa); then
     echo "QA branch has diverged from master branch! Exiting..."
     exit 1
 fi
