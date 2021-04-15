@@ -132,10 +132,6 @@ section {
   border-radius: 5px;
 }
 
-.codeblock-content pre {
-  white-space: nowrap;
-}
-
 .codeblock-content code {
   padding-bottom: 20px;
   font-size: 1rem;

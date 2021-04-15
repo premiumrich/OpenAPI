@@ -20,5 +20,15 @@ pipelines:
               deployment: GitHub Repo
               image: atlassian/default-image:2
               script:
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-php master:master
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-php --tags
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-php" master:master
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-php" --tags
+          - step:
+              name: Publish to Packagist
+              deployment: Packagist
+              image: atlassian/default-image:2
+              script:
+                - >
+                  curl "https://packagist.org/api/update-package?username=Trulioo&apiToken=${PACKAGIST_TOKEN}" \
+                      --silent --fail --show-error --request POST \
+                      --header "content-type: application/json" \
+                      --data '{ "repository": { "url": "https://github.com/Trulioo/sdk-php" } }'

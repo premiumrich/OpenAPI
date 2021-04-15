@@ -1,11 +1,5 @@
 {
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/Trulioo/sdk-php.git"
-    }
-  ],
   "require": {
-    "trulioo/trulioo-sdk": "*@dev"
+    "trulioo/trulioo-sdk": "^1.0.0"
   }
 }

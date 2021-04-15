@@ -59,8 +59,7 @@ if [[ $(git rev-parse --abbrev-ref HEAD) != "qa" ]]; then
     exit 1
 fi
 
-git fetch origin master:refs/remotes/origin/master
-
+git fetch -q origin master:refs/remotes/origin/master
 if ! (git merge-base --is-ancestor origin/master qa); then
     echo "QA branch has diverged from master branch! Exiting..."
     exit 1

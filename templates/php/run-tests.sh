@@ -1,6 +1,10 @@
 #!/bin/bash
 
-./vendor/bin/phpunit --coverage-clover clover.xml --coverage-text --coverage-html=coverage/
+# Requires PHP and PHPUnit
+
+./vendor/bin/phpunit \
+    --coverage-clover clover.xml --coverage-text --coverage-html=coverage/ \
+    --log-junit test-reports/junit.xml
 tests_status=$?
 
 php -r "$(cat << END

@@ -1,5 +1,4 @@
 # {{projectDescription}}
-> {{packageName}}
 
 - API version: {{appVersion}}
 {{#artifactVersion}}
@@ -16,67 +15,56 @@
 
 PHP 7.2 or later is required.
 
-- If Composer is available globally on your system, run the following command in the root directory of your project:
+Run `composer require {{packageName}}` in the root directory of your project, or add this dependency to
+`composer.json`:
 
-  `composer require {{packageName}}`
-
-- Add the following to `composer.json`, then run `composer install`
-
-    ```json
-    {
-      "repositories": [
-        {
-          "type": "vcs",
-          "url": "https://github.com/{{gitUserId}}/{{gitRepoId}}.git"
-        }
-      ],
-      "require": {
-        "{{packageName}}": "*@dev"
-      }
-    }
-    ```
+```json
+{
+  "require": {
+    "{{packageName}}": "^{{artifactVersion}}"
+  }
+}
+```
 
 ## Sample Application
 
 Check out our sample application for this SDK in the
-[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/sample-app) folder.
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/tree/{{artifactVersion}}/sample-app) folder.
 
 ## Getting Started
 
 ```php
-<?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
-{{> php_doc_auth_partial}}
-$apiInstance = new {{invokerPackage}}\Api\{{classname}}(
-    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-    // This is optional, `GuzzleHttp\Client` will be used as default.
-    new GuzzleHttp\Client(){{#hasAuthMethods}},
-    $config{{/hasAuthMethods}}
-);
-{{#allParams}}${{paramName}} = {{{example}}}; // {{{dataType}}}{{#description}} | {{{description}}}{{/description}}
-{{/allParams}}
+$configuration = OpenAPI\Client\Configuration::getDefaultConfiguration();
+// Configure API key authorization: ApiKeyAuth
+$configuration->setApiKey('x-trulioo-api-key', 'YOUR-X-TRULIOO-API-KEY');
+
+// If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+// This is optional, `GuzzleHttp\Client` will be used as default.
+$connectionApi = new OpenAPI\Client\Api\ConnectionApi(new GuzzleHttp\Client(), $config);
+
+$mode = 'trial';
 
 try {
-    {{#returnType}}$result = {{/returnType}}$apiInstance->{{{operationId}}}({{#allParams}}${{paramName}}{{^-last}}, {{/-last}}{{/allParams}});{{#returnType}}
-    print_r($result);{{/returnType}}
+    $result = $connectionApi->testAuthentication($mode);
+    echo $result;
 } catch (Exception $e) {
-    echo 'Exception when calling {{classname}}->{{operationId}}: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling ConnectionApi->testAuthentication: ', $e->getMessage(), PHP_EOL;
 }
-{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
 ```
 
 ## Testing
 
+Install dependencies with [Composer](http://getcomposer.org/) by running `composer install`, then run:
+
 ```bash
-composer install
 ./run-tests.sh
 ```
 
 ## Documentation for APIs
 
-All URIs are relative to *{{basePath}}*
+All URIs are relative to *{{basePath}}*.
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

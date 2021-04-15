@@ -1,0 +1,10 @@
+.github/                    export-ignore
+.openapi-generator/         export-ignore
+docs/                       export-ignore
+test/                       export-ignore
+sample-app/                 export-ignore
+.gitignore                  export-ignore
+.gitattributes              export-ignore
+bitbucket-pipelines.yml     export-ignore
+phpunit.xml.dist            export-ignore
+run-tests.sh                export-ignore

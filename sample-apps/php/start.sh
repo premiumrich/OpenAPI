@@ -1,3 +1,5 @@
 #!/bin/bash
 
-php -S localhost:8000
+# Requires PHP 7.2 or later
+
+php -S localhost:1055 router.php

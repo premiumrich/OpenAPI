@@ -12,9 +12,9 @@ PHP 7.2 or later is required. We recommend using [Composer](http://getcomposer.o
 
 1. Start the PHP server
 
-    `./start.sh` or `php -S localhost:8000`
+    `./start.sh` or `php -S localhost:1055 router.php`
 
-2. Visit [http://localhost:8000](http://localhost:8000) in your browser
+2. Visit [http://localhost:1055](http://localhost:1055) in your browser
 
 3. Each step of the Identity Verification flow is accompanied with a description and form. Click on the run button in
    each step to test the function call and view the response.
