@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python manage.py runserver
+# Requires Python 3.6 or later
+
+python manage.py runserver 1055

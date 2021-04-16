@@ -11,6 +11,11 @@ pipelines:
         artifacts:
           - dist/**
     - parallel:
+        - step: &check-sdk-versions
+            name: Check SDK versions
+            image: atlassian/default-image:2
+            script:
+              - bash scripts/check-versions.sh
         - step: &run-php-tests
             name: Run PHP tests
             image: php:7.4
@@ -29,9 +34,9 @@ pipelines:
             caches:
               - pip
             script:
-              - pip install tox
+              - python -m pip install tox
               - cd dist/sdk-python/
-              - tox
+              - python -m tox
         - step: &run-java-tests
             name: Run Java tests
             image: maven:3.6.3-jdk-8
@@ -44,6 +49,7 @@ pipelines:
     master:
       - step: *generate-sdks
       - parallel:
+          - step: *check-sdk-versions
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests
@@ -57,6 +63,7 @@ pipelines:
     qa:
       - step: *generate-sdks
       - parallel:
+          - step: *check-sdk-versions
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests
@@ -73,4 +80,4 @@ pipelines:
           trigger: manual
           image: atlassian/default-image:2
           script:
-            - git push https://$GITHUB_TOKEN@github.com/Trulioo/OpenAPI qa:master
+            - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/OpenAPI" qa:master

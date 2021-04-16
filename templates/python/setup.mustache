@@ -1,45 +1,39 @@
 {{>partial_header}}
 
-from setuptools import setup, find_packages
+from os import path
+from setuptools import setup
 
-NAME = "{{{packageName}}}"
-VERSION = "{{packageVersion}}"
-
-# To install the library, run the following
-#
-# python setup.py install
-#
-# prerequisite: setuptools
-# http://pypi.python.org/pypi/setuptools
-
-REQUIRES = [
-    "urllib3 >= 1.25.3",
-    "python-dateutil",
-    {{#asyncio}}
-    "aiohttp >= 3.0.0",
-    {{/asyncio}}
-    {{#tornado}}
-    "tornado>=4.2,<5",
-    {{/tornado}}
-    {{#hasHttpSignatureMethods}}
-    "pem>=19.3.0",
-    "pycryptodome>=3.9.0",
-    {{/hasHttpSignatureMethods}}
-]
+with open(
+    path.join(path.abspath(path.dirname(__file__)), "README.md"), encoding="utf-8"
+) as readme_file:
+    long_description = readme_file.read()
 
 setup(
-    name=NAME,
-    version=VERSION,
+    name="{{packageName}}",
+    version="{{packageVersion}}",
     description="{{projectDescription}}",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Trulioo",
     author_email="support@trulioo.com",
     url="https://github.com/{{gitUserId}}/{{gitRepoId}}/",
-    keywords=["OpenAPI", "OpenAPI-Generator", "{{projectDescription}}"],
+    keywords=["{{projectDescription}}", "OpenAPI", "OpenAPI-Generator"],
     python_requires=">=3.6",
-    install_requires=REQUIRES,
-    packages=find_packages(exclude=["test", "tests"]),
+    install_requires=[
+        "urllib3 >= 1.25.3",
+        "python-dateutil",
+        {{#asyncio}}
+        "aiohttp >= 3.0.0",
+        {{/asyncio}}
+        {{#tornado}}
+        "tornado>=4.2,<5",
+        {{/tornado}}
+        {{#hasHttpSignatureMethods}}
+        "pem>=19.3.0",
+        "pycryptodome>=3.9.0",
+        {{/hasHttpSignatureMethods}}
+    ],
+    packages=["{{packageName}}"],
     include_package_data=True,
-    {{#licenseName}}
-    license="{{licenseName}}"
-    {{/licenseName}}
+    license="{{licenseName}}",
 )

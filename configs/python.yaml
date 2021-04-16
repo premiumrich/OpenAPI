@@ -4,7 +4,7 @@ packageName: trulioo_sdk
 projectDescription: Trulioo Python SDK
 licenseName: Apache-2.0
 gitRepoId: sdk-python
-artifactVersion: 1.0.0
+artifactVersion: 1.0.1
 generatorName: python
 outputDir: ./dist/sdk-python/
 templateDir: ./templates/python/

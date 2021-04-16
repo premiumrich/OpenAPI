@@ -13,9 +13,9 @@ the root of this sample project to install all dependencies.
 
 1. Start the Django server.
 
-    `./start.sh` or `python manage.py runserver`
+    `./start.sh` or `python manage.py runserver 1055`
 
-2. Visit [http://localhost:8000](http://localhost:8000) in your browser.
+2. Visit [http://localhost:1055](http://localhost:1055) in your browser.
 
 3. Each step of the Identity Verification flow is accompanied with a description and form. Click on the run button in
    each step to test the function call and view the response.

@@ -6,8 +6,8 @@ pipelines:
         caches:
           - pip
         script:
-          - pip install tox
-          - tox
+          - python -m pip install tox
+          - python -m tox
   branches:
     master:
       - step: *run-tests
@@ -17,5 +17,16 @@ pipelines:
               deployment: GitHub Repo
               image: atlassian/default-image:2
               script:
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-python master:master
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-python --tags
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-python" master:master
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-python" --tags
+          - step:
+              name: Publish to PyPI
+              deployment: PyPI
+              image: python:3.9.1
+              caches:
+                - pip
+              script:
+                - python -m pip install build twine
+                - python -m build
+                - python -m twine check dist/*
+                - python -m twine upload --non-interactive --username "__token__" --password "$PYPI_TOKEN" dist/*

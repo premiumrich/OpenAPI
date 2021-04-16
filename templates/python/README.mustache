@@ -1,5 +1,4 @@
-# {{appName}}
-> {{packageName}}
+# {{projectDescription}}
 
 - API version: {{appVersion}}
 {{#artifactVersion}}
@@ -28,7 +27,7 @@ python setup.py install --user
 ## Sample Application
 
 Check out our sample application for this SDK in the
-[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/sample-app) folder.
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/tree/{{artifactVersion}}/sample-app) folder.
 
 
 ## Getting Started
@@ -39,17 +38,14 @@ Example of test_authentication:
 from trulioo_sdk import Configuration, ApiException
 from trulioo_sdk.apis import ConnectionApi
 
-# See configuration.py for a list of all supported configuration parameters
 configuration = trulioo_sdk.Configuration()
-configuration.api_key['ApiKeyAuth'] = 'X_TRULIOO_API_KEY'
+# Configure API key authorization: ApiKeyAuth
+configuration.api_key['ApiKeyAuth'] = 'YOUR-X-TRULIOO-API-KEY'
 
-# Enter context with an instance of the API client
+mode = "trial"
+
 with trulioo_sdk.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api = ConnectionApi(api_client)
-    # Define parameters
-    mode = "trial"
-    # Call API
+    connectionApi = ConnectionApi(api_client)
     try:
         result = api.test_authentication(mode)
     except ApiException as e:
@@ -58,15 +54,16 @@ with trulioo_sdk.ApiClient(configuration) as api_client:
 
 ## Testing
 
-This project uses [tox](https://tox.readthedocs.io/en/latest/) for consistent testing. First, run `pip install tox`.
+This project uses [tox](https://tox.readthedocs.io/en/latest/) for consistent testing. Install with `pip install tox`,
+then run:
 
 ```bash
-tox
+python -m tox
 ```
 
 ## Documentation for APIs
 
-All URIs are relative to *{{basePath}}*
+All URIs are relative to *{{basePath}}*.
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
