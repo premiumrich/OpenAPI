@@ -40,11 +40,12 @@ for lang in "${!languages[@]}"; do
     ]]; then
         echo "[${languages[$lang]} SDK] Detected changes"
         is_new_sdk=$(! [[ $(git ls-tree -r --name-only "$branch_base") =~ $config_file ]] && echo true)
-        is_version_updated=$([[ $(git diff --staged "$branch_base" "$config_file") =~ \+artifactVersion ]] && echo true)
-        if [[ $is_new_sdk == true || $is_version_updated == true ]]; then
+        previous_version=$(git show "${branch_base}:${config_file}" 2>/dev/null \
+            | grep "artifactVersion" | sed "s/artifactVersion: //")
+        current_version=$(grep "artifactVersion" "$config_file" | sed "s/artifactVersion: //")
+        if [[ $is_new_sdk == true || "$previous_version" != "$current_version" ]]; then
             echo "[${languages[$lang]} SDK] Version has already been updated"
         else
-            current_version=$(grep "artifactVersion" "$config_file" | sed "s/artifactVersion: //")
             IFS="." read -r -a parts <<< "$current_version"
             new_version="${parts[0]}.${parts[1]}.$((parts[2]+1))"
             echo "[${languages[$lang]} SDK] Automatically bumping version from $current_version to $new_version"
