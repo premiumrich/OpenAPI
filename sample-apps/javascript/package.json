@@ -1,0 +1,11 @@
+{
+  "name": "trulioo-sdk-sample-app",
+  "version": "1.0.0",
+  "description": "Trulioo JavaScript SDK Sample Application",
+  "license": "Apache-2.0",
+  "main": "src/app.js",
+  "dependencies": {
+    "trulioo-sdk": "^1.0.0",
+    "express": "^4.17.1"
+  }
+}

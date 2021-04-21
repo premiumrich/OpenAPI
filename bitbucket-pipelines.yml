@@ -16,6 +16,15 @@ pipelines:
             image: atlassian/default-image:2
             script:
               - bash scripts/check-versions.sh
+        - step: &run-javascript-tests
+            name: Run JavaScript tests
+            image: node:14.16
+            caches:
+              - node
+            script:
+              - cd dist/sdk-javascript/
+              - npm install
+              - npm run test:junit-report
         - step: &run-php-tests
             name: Run PHP tests
             image: php:7.4
@@ -50,6 +59,7 @@ pipelines:
       - step: *generate-sdks
       - parallel:
           - step: *check-sdk-versions
+          - step: *run-javascript-tests
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests
@@ -64,6 +74,7 @@ pipelines:
       - step: *generate-sdks
       - parallel:
           - step: *check-sdk-versions
+          - step: *run-javascript-tests
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests

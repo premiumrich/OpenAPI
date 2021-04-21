@@ -1,0 +1,55 @@
+import expect from 'expect';
+import nock from 'nock';
+import ApiClient from '../../src/ApiClient';
+import {{classname}} from '../../src/api/{{classname}}';
+
+describe('{{classname}}', () => {
+  let {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+
+  beforeEach(() => {
+    const apiClient = new ApiClient();
+    apiClient.authentications['ApiKeyAuth'].apiKey = 'test-api-key';
+    {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(apiClient);
+  });
+
+  it('should construct with default ApiClient', () => {
+    expect(new {{classname}}().apiClient).toStrictEqual(ApiClient.instance);
+  });
+  {{#operations}}
+  {{#operation}}
+
+  describe('#{{operationId}}', () => {
+    it('should correctly call the API and deserialize the response', async () => {
+      nock('https://gateway.trulioo.com', { reqheaders: { 'x-trulioo-api-key': 'test-api-key' }})
+        .get('ENDPOINT')
+        .reply(200, RESPONSE);
+
+      const result = await {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+
+      expect(result).toStrictEqual(RESULT);
+    });
+
+    it('should throw an error if the API returns 401 unauthorized', async () => {
+      nock('https://gateway.trulioo.com', { reqheaders: { 'x-trulioo-api-key': 'test-api-key' } })
+        .get('ENDPOINT')
+        .reply(401);
+
+      try {
+        await {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+        throw new Error('Expected error');
+      } catch (error) {
+        expect(error.status).toBe(401);
+      }
+    });
+
+    it('should throw an error if a required parameter is undefined', () => {
+      {{#allParams}}
+      expect(() => {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}undefined{{^-last}}, {{/-last}}{{/allParams}})).toThrow(
+        new Error("Missing the required parameter '{{paramName}}' when calling {{operationId}}")
+      );
+      {{/allParams}}
+    });
+  });
+  {{/operation}}
+  {{/operations}}
+});

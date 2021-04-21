@@ -6,7 +6,8 @@ pipelines:
         caches:
           - node
         script:
-          - 'true'
+          - npm install
+          - npm run test:junit-report
   branches:
     master:
       - step: *run-tests
@@ -16,5 +17,17 @@ pipelines:
               deployment: GitHub Repo
               image: atlassian/default-image:2
               script:
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-javascript master:master
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-javascript --tags
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-javascript" master:master
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-javascript" --tags
+          - step:
+              name: Publish to npm
+              deployment: npm
+              image: node:14.16
+              caches:
+                - node
+              script:
+                - npm install
+                - pipe: atlassian/npm-publish:0.3.2
+                  variables:
+                    NPM_TOKEN: $NPM_TOKEN
+                    EXTRA_ARGS: --unsafe-perm

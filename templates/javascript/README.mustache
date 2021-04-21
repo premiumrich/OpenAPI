@@ -1,20 +1,16 @@
 # {{projectDescription}}
-> {{packageName}}
 
 - API version: {{appVersion}}
 {{#artifactVersion}}
 - Package version: {{artifactVersion}}
 {{/artifactVersion}}
-{{^hideGenerationTimestamp}}
-- Build date: {{generatedDate}}
-{{/hideGenerationTimestamp}}
 - Build package: {{generatorClass}}
 
 ## Installation
 
-### With [Node.js](https://nodejs.org/)
+This SDK targets JavaScript ECMAScript 6.
 
-To install the library with [npm](https://www.npmjs.com/), run the following command in the root directory of your project
+### With [npm](https://www.npmjs.com/)
 
 ```shell
 npm install {{{packageName}}}
@@ -23,90 +19,50 @@ npm install {{{packageName}}}
 ## Sample Application
 
 Check out our sample application for this SDK in the
-[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/sample-app) folder.
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/tree/{{artifactVersion}}/sample-app) folder.
 
 ## Getting Started
 
+### Example of testing authentication (ES6)
+
 ```javascript
-var {{{moduleName}}} = require('{{{projectName}}}');
-{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
-{{#hasAuthMethods}}
-var defaultClient = {{{moduleName}}}.ApiClient.instance;
-{{#authMethods}}
-{{#isBasic}}
-{{#isBasicBasic}}
-// Configure HTTP basic authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.username = 'YOUR USERNAME'
-{{{name}}}.password = 'YOUR PASSWORD'
-{{/isBasicBasic}}
-{{#isBasicBearer}}
-// Configure Bearer{{#bearerFormat}} ({{{.}}}){{/bearerFormat}} access token for authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.accessToken = "YOUR ACCESS TOKEN"
-{{/isBasicBearer}}
-{{/isBasic}}
-{{#isApiKey}}
-// Configure API key authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//{{{name}}}.apiKeyPrefix['{{{keyParamName}}}'] = "Token"
-{{/isApiKey}}
-{{#isOAuth}}
-// Configure OAuth2 access token for authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.accessToken = "YOUR ACCESS TOKEN"
-{{/isOAuth}}
-{{/authMethods}}
-{{/hasAuthMethods}}
+const Trulioo = require('trulioo-sdk');
 
-var api = new {{{moduleName}}}.{{{classname}}}()
-{{#hasParams}}
-{{#requiredParams}}
-var {{{paramName}}} = {{{example}}}; // {{=< >=}}{<&dataType>}<={{ }}=> {{{description}}}
-{{/requiredParams}}
-{{#optionalParams}}
-{{#-first}}
-var opts = {
-{{/-first}}
-  '{{{paramName}}}': {{{example}}}{{^-last}},{{/-last}} // {{=< >=}}{<&dataType>}<={{ }}=> {{{description}}}
-{{#-last}}
-};
-{{/-last}}
-{{/optionalParams}}
-{{/hasParams}}
-{{#usePromises}}
-api.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}}).then(function({{#returnType}}data{{/returnType}}) {
-  {{#returnType}}console.log('API called successfully. Returned data: ' + data);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
-}, function(error) {
-  console.error(error);
-});
+const apiClient = Trulioo.ApiClient.instance;
 
-{{/usePromises}}
-{{^usePromises}}
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    {{#returnType}}console.log('API called successfully. Returned data: ' + data);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
+// Configure API key authorization
+apiClient.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
+
+// Create instance of ConnectionApi
+const connectionApi = new Trulioo.ConnectionApi(apiClient);
+
+// Configure mode: 'trial' or 'live'
+const mode = 'trial';
+
+// Call #testAuthentication and handle promise
+(async () => {
+  try {
+    const result = await connectionApi.testAuthentication(mode);
+    console.log(result);
+  } catch (error) {
+    console.log(`Error when calling ConnectionApi#testAuthentication\n${JSON.stringify(error.response, null, 2)}`);
   }
-};
-api.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}}{{#hasParams}}, {{/hasParams}}callback);
-{{/usePromises}}
-{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
+})();
 ```
 
 ## Testing
 
+This project uses [Mocha](https://mochajs.org/) for unit testing and [Istanbul](https://istanbul.js.org/) for code
+coverage. Configuration is located in `package.json`.
+
 ```bash
-npm ci
-./run-tests.sh
+npm install
+npm test
 ```
 
 ## Documentation for APIs
 
-All URIs are relative to *{{basePath}}*
+All URIs are relative to *{{basePath}}*.
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -117,15 +73,17 @@ Class | Method | HTTP request | Description
 {{#models}}{{#model}} - [{{moduleName}}.{{classname}}]({{modelDocPath}}{{classname}}.md)
 {{/model}}{{/models}}
 ## Documentation for Authorization
-
 {{^authMethods}}
+
 All endpoints do not require authorization.
 {{/authMethods}}
 {{#authMethods}}
-{{#last}} Authentication schemes defined for the API:{{/last}}
+{{#last}}
+
+Authentication schemes defined for the API:
+{{/last}}
 
 ### {{name}}
-
 {{#isApiKey}}
 
 - **Type**: API key
@@ -134,9 +92,11 @@ All endpoints do not require authorization.
 {{/isApiKey}}
 {{#isBasic}}
 {{#isBasicBasic}}
+
 - **Type**: HTTP basic authentication
 {{/isBasicBasic}}
 {{#isBasicBearer}}
+
 - **Type**: Bearer authentication{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}
 {{/isBasicBearer}}
 {{/isBasic}}
@@ -149,5 +109,4 @@ All endpoints do not require authorization.
 {{#scopes}}  - {{scope}}: {{description}}
 {{/scopes}}
 {{/isOAuth}}
-
 {{/authMethods}}

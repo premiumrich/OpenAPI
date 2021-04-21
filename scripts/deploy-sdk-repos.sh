@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -A languages=(
+    ["javascript"]="JavaScript"
     ["php"]="PHP"
     ["python"]="Python"
 )

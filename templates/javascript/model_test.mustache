@@ -1,0 +1,37 @@
+import expect from 'expect';
+import {{classname}} from '../../src/model/{{classname}}';
+
+describe('{{classname}}', () => {
+  it('should construct an instance of {{classname}}', () => {
+    const {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = {{classname}}.constructFromObject({}, undefined);
+    
+    expect({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}).toBeInstanceOf({{classname}});
+  });
+
+  it('should not construct with no data', () => {
+    const {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = {{classname}}.constructFromObject(undefined, null);
+
+    expect({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}).toBe(null);
+  });
+
+  it('should construct with properties from object', () => {
+    const data = {
+      {{#models}}
+      {{#model}}
+      {{#vars}}
+      {{baseName}}: '',
+      {{/vars}}
+      {{/model}}
+      {{/models}}
+    };
+    const {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = {{classname}}.constructFromObject(data);
+
+    {{#models}}
+    {{#model}}
+    {{#vars}}
+    expect({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{baseName}}).toBe(data.{{baseName}});
+    {{/vars}}
+    {{/model}}
+    {{/models}}
+  });
+});

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "[JavaScript SDK] Copying supporting files to dist..."
+mkdir -p dist/sdk-javascript/test/ && cp -r tests/javascript/. dist/sdk-javascript/test/
+mkdir -p dist/sdk-javascript/sample-app/ && cp -r sample-apps/javascript/. dist/sdk-javascript/sample-app/
+cp -r deploy/javascript/. dist/sdk-javascript/
+
 echo "[PHP SDK] Copying supporting files to dist..."
 mkdir -p dist/sdk-php/test/ && cp -r tests/php/. dist/sdk-php/test/
 mkdir -p dist/sdk-php/sample-app/ && cp -r sample-apps/php/. dist/sdk-php/sample-app/
