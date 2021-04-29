@@ -1,0 +1,10 @@
+require "bundler/gem_tasks"
+require "rspec/core/rake_task"
+
+begin
+  RSpec::Core::RakeTask.new(:spec) do |task|
+    task.rspec_opts = "--format documentation --format RspecJunitFormatter --out test-reports/junit.xml"
+  end
+  task :test => :spec
+rescue LoadError
+end

@@ -1,0 +1,126 @@
+# {{gemSummary}}
+
+- Package version: {{artifactVersion}}
+- API version: {{appVersion}}
+- Build package: {{generatorClass}}
+
+## Installation
+
+Ruby 2.4 or later is required.
+
+### From [RubyGems](https://rubygems.org/)
+
+```shell
+gem install trulioo_sdk
+```
+
+### With local build
+
+```shell
+gem build {{{gemName}}}.gemspec
+gem install {{{gemName}}}-{{{gemVersion}}}.gem
+```
+
+### As a dependency
+
+Add the following line to the Gemfile:
+
+```ruby
+gem "{{{gemName}}}", "~> {{{gemVersion}}}"
+```
+
+## Sample Application
+
+Check out our sample application for this SDK in the
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/tree/{{artifactVersion}}/sample-app) folder.
+
+## Getting Started
+
+### Example of testing authentication
+
+```ruby
+require "trulioo_sdk"
+
+# Configure API key authorization
+config = Trulioo::Configuration.new()
+config.api_key["ApiKeyAuth"] = "YOUR-X-TRULIOO-API-KEY"
+
+# Initialize instance of Trulioo::ApiClient with config
+api_client = Trulioo::ApiClient.new(config)
+
+# Initialize instance of Trulioo::ConnectionApi with api_client
+connection_api = Trulioo::ConnectionApi.new(api_client)
+
+# Configure mode: "trial" or "live"
+mode = "trial"
+
+# Call Trulioo::ConnectionApi#test_authentication
+begin
+  result = connection_api.test_authentication(mode)
+  puts(result)
+rescue Trulioo::ApiError => error
+  puts("Error when calling Trulioo::ConnectionApi#test_authentication")
+  puts("HTTP status code: #{error.code}")
+  puts("Response headers: #{error.response_headers}")
+  puts("Response body: #{error.response_body}")
+end
+```
+
+## Testing
+
+Install [Bundler](https://bundler.io/) by running `gem install bundler`, then execute:
+
+```shell
+bundle install
+bundle exec rake test
+```
+
+## Documentation for APIs
+
+All URIs are relative to *{{basePath}}*.
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{moduleName}}::{{classname}}* | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{{summary}}}{{/summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+## Documentation for Models
+
+{{#models}}{{#model}} - [{{moduleName}}::{{classname}}]({{modelDocPath}}{{classname}}.md)
+{{/model}}{{/models}}
+## Documentation for Authorization
+{{^authMethods}}
+
+All endpoints do not require authorization.
+{{/authMethods}}
+{{#authMethods}}{{#last}}
+
+Authentication schemes defined for the API:
+{{/last}}
+
+### {{name}}
+{{#isApiKey}}
+
+- **Type**: API key
+- **API key parameter name**: {{keyParamName}}
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+{{/isApiKey}}
+{{#isBasic}}
+{{#isBasicBasic}}
+
+- **Type**: HTTP basic authentication
+{{/isBasicBasic}}
+{{#isBasicBearer}}
+
+- **Type**: Bearer authentication{{#bearerFormat}} ({{{.}}}){{/bearerFormat}}
+{{/isBasicBearer}}
+{{/isBasic}}
+{{#isOAuth}}
+
+- **Type**: OAuth
+- **Flow**: {{flow}}
+- **Authorization URL**: {{authorizationUrl}}
+- **Scopes**: {{^scopes}}N/A{{/scopes}}
+{{#scopes}}  - {{scope}}: {{description}}
+{{/scopes}}
+{{/isOAuth}}
+{{/authMethods}}

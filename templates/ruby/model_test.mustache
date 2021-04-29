@@ -1,0 +1,84 @@
+require "spec_helper"
+require "securerandom"
+
+{{#models}}
+{{#model}}
+describe {{moduleName}}::{{classname}} do
+  let(:model) { {{moduleName}}::{{classname}}.new }
+  let(:test_attributes) {
+    {
+      {{#vars}}
+      {{name}}: {{#isString}}SecureRandom.alphanumeric({{#maxLength}}{{maxLength}}{{/maxLength}}{{^maxLength}}10{{/maxLength}}){{/isString}}{{#isBoolean}}true{{/isBoolean}}{{#isInteger}}123{{/isInteger}}{{#isArray}}[]{{/isArray}}{{#isMap}}{}{{/isMap}}{{#isByteArray}}"base64"{{/isByteArray}}{{#isDateTime}}Time.at(rand * Time.now.to_i){{/isDateTime}}{{#isFreeFormObject}}{}{{/isFreeFormObject}}{{#isModel}}{{moduleName}}::{{{dataType}}}.new{{/isModel}},
+      {{/vars}}
+    }
+  }
+
+  it "should have correct array of acceptable JSON keys" do
+    expect({{moduleName}}::{{classname}}.acceptable_attributes).to eql([
+      {{#vars}}
+      :"{{baseName}}",
+      {{/vars}}
+    ])
+  end
+
+  it "should have correct array of acceptable attribute types" do
+    expect({{moduleName}}::{{classname}}.openapi_types.values).to eql([
+      {{#vars}}
+      :"{{{dataType}}}",
+      {{/vars}}
+    ])
+  end
+
+  it "should have correct set of nullable attributes" do
+    expect({{moduleName}}::{{classname}}.openapi_nullable).to eql(Set.new([]))
+  end
+
+  it "should have correct array of invalid properties" do
+    expected_invalid_properties = Array.new
+    {{#vars}}{{#required}}
+    model.{{name}} = nil
+    expected_invalid_properties.push('invalid value for "{{name}}", {{name}} cannot be nil.')
+    {{/required}}{{^required}}{{#maxLength}}
+    model.instance_variable_set(:@{{name}}, SecureRandom.alphanumeric({{maxLength}} + 1))
+    expected_invalid_properties.push('invalid value for "{{name}}", the character length must be smaller than or equal to {{maxLength}}.')
+    {{/maxLength}}{{/required}}{{/vars}}
+    expect(model.list_invalid_properties).to eql(expected_invalid_properties)
+  end
+
+  it "should perform any validation in custom attribute writers" do{{#vars}}{{#hasValidation}}{{#maxLength}}
+    expect { model.{{name}} = SecureRandom.alphanumeric({{maxLength}} + 1) }.to raise_error(ArgumentError){{/maxLength}}{{/hasValidation}}{{/vars}}
+  end
+
+  it "should correctly initialize with attributes from Hash" do
+    model = {{moduleName}}::{{classname}}.new(test_attributes)
+
+    {{#vars}}
+    expect(model.{{name}}).to be(test_attributes[:{{name}}])
+    {{/vars}}
+
+    expect(model.valid?).to be true
+  end
+
+  it "should not initialize with a non-Hash argument" do
+    expect { {{moduleName}}::{{classname}}.new([]) }.to raise_error(ArgumentError)
+  end
+
+  it "should not initialize with a Hash that contains an invalid attribute" do
+    expect { {{moduleName}}::{{classname}}.new({ test_invalid_key: "" }) }.to raise_error(ArgumentError)
+  end
+
+  it "should correctly check object equality" do
+    {{#vars}}{{#-first}}model.{{name}} = test_attributes[:{{name}}]
+
+    expect(model).to equal(model)
+    expect(model).to eql({{moduleName}}::{{classname}}.new({ {{name}}: test_attributes[:{{name}}] })){{/-first}}{{/vars}}
+  end
+
+  it "should correctly calculate hash code" do
+    {{#vars}}{{#-first}}model.{{name}} = test_attributes[:{{name}}]
+
+    expect({{moduleName}}::{{classname}}.new({ {{name}}: test_attributes[:{{name}}] }).hash).to eql(model.hash){{/-first}}{{/vars}}
+  end
+end
+{{/model}}
+{{/models}}

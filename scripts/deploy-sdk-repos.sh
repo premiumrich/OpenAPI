@@ -4,6 +4,7 @@ declare -A languages=(
     ["javascript"]="JavaScript"
     ["php"]="PHP"
     ["python"]="Python"
+    ["ruby"]="Ruby"
 )
 
 

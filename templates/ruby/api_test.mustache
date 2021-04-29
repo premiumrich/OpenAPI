@@ -1,0 +1,61 @@
+require "spec_helper"
+require "webmock/rspec"
+
+{{#operations}}
+describe {{moduleName}}::{{classname}} do
+  before(:all) {
+    Trulioo.configure do |config|
+      config.api_key["ApiKeyAuth"] = "test-api-key"
+      config.debugging = true
+    end
+  }
+  let(:api) { {{moduleName}}::{{classname}}.new }
+  {{#operation}}
+
+  describe "#{{operationId}}" do
+    context "when receiving 200 success" do
+      before(:each) do
+        stub_request(:any, /.*/).to_return(status: 200, body: '""')
+      end
+      let!(:result) {
+        api.{{operationId}}({{#allParams}}{{#isString}}{{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{{paramName}}}{{/defaultValue}}{{/isString}}{{#isModel}}{{moduleName}}::{{{dataType}}}.new{{/isModel}}{{^-last}}, {{/-last}}{{/allParams}})
+      }
+
+      it "should correctly call the API" do
+        expect(
+          a_request(:{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}, "https://gateway.trulioo.com{{path}}"){{#hasAuthMethods}}
+            .with(headers: { "x-trulioo-api-key": "test-api-key" }){{/hasAuthMethods}}
+        ).to have_been_made
+      end
+
+      it "should correctly deserialize the response" do{{#responses}}{{#is2xx}}
+        expect(result).to eql({{#isString}}{{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{{dataType}}}{{/defaultValue}}{{/isString}}{{#isModel}}{{moduleName}}::{{{dataType}}}.new{{/isModel}}){{/is2xx}}{{/responses}}
+      end
+    end
+
+    context "when receiving 401 unauthorized" do
+      before(:each) do
+        stub_request(:any, /.*/).to_return(status: 401)
+      end
+
+      it "should throw an ApiError" do
+        expect {
+          api.{{operationId}}({{#allParams}}{{#isString}}{{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{{paramName}}}{{/defaultValue}}{{/isString}}{{#isModel}}{{moduleName}}::{{{dataType}}}.new{{/isModel}}{{^-last}}, {{/-last}}{{/allParams}})
+        }.to raise_error({{moduleName}}::ApiError, /HTTP status code: 401/)
+      end
+    end
+    {{#allParams}}
+
+    context "with parameter '{{paramName}}' as nil" do
+      it "should throw an ArgumentError" do
+        expect { api.{{operationId}}({{#allParams}}nil{{^-last}}, {{/-last}}{{/allParams}}) }.to raise_error(
+          ArgumentError,
+          "Missing the required parameter '{{paramName}}' when calling {{classname}}.{{operationId}}"
+        )
+      end
+    end
+    {{/allParams}}
+  end
+  {{/operation}}
+end
+{{/operations}}

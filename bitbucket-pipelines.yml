@@ -54,6 +54,16 @@ pipelines:
             script:
               - cd dist/sdk-java/
               - mvn -B test
+        - step: &run-ruby-tests
+            name: Run Ruby tests
+            image: ruby:2.7
+            caches:
+              - bundler
+            script:
+              - cd dist/sdk-ruby/
+              - bundle install --path vendor/bundle/
+              - bundle exec rake test
+              - gem build --strict --verbose *.gemspec
   branches:
     master:
       - step: *generate-sdks
@@ -63,6 +73,7 @@ pipelines:
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests
+          - step: *run-ruby-tests
       - step:
           name: Deploy to QA Branch
           deployment: QA Branch
@@ -78,6 +89,7 @@ pipelines:
           - step: *run-php-tests
           - step: *run-python-tests
           - step: *run-java-tests
+          - step: *run-ruby-tests
       - step:
           name: Deploy to SDK Repos
           deployment: SDK Repos
@@ -92,3 +104,7 @@ pipelines:
           image: atlassian/default-image:2
           script:
             - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/OpenAPI" qa:master
+
+definitions:
+  caches:
+    bundler: dist/sdk-ruby/vendor/bundle/

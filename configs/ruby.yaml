@@ -1,0 +1,14 @@
+'!include': ./shared/common.yaml
+
+artifactVersion: 1.0.0
+generatorName: ruby
+gemName: trulioo_sdk
+gemSummary: Trulioo Ruby SDK
+gemLicense: Apache-2.0
+moduleName: Trulioo
+library: faraday
+gitRepoId: sdk-ruby
+outputDir: ./dist/sdk-ruby/
+templateDir: ./templates/ruby/
+ignoreFileOverride: ./configs/openapi-generator-ignore/ruby.openapi-generator-ignore
+enablePostProcessFile: true

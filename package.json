@@ -2,7 +2,7 @@
   "name": "trulioo-openapi",
   "version": "1.0.0",
   "scripts": {
-    "generate": "openapi-generator-cli batch ./configs/*.yaml",
+    "generate": "env-cmd -f configs/generator.env openapi-generator-cli batch configs/*.yaml",
     "generate:clean": "rm -rf dist/ && npm run generate",
     "postgenerate": "bash scripts/bundle.sh"
   },
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.1.26",
+    "env-cmd": "^10.1.0",
     "husky": "^4.3.8"
   }
 }

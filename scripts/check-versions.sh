@@ -5,6 +5,7 @@ declare -A languages=(
     ["php"]="PHP"
     ["python"]="Python"
     ["java"]="Java"
+    ["ruby"]="Ruby"
 )
 
 # Arguments: language
@@ -20,12 +21,16 @@ function get_latest_version() {
                 | jq --raw-output '.packages[][0].version' 2>/dev/null
             ;;
         python)
-            curl -s "https://pypi.org/pypi/trulioo_sdk/json" \
+            curl -s "https://pypi.org/pypi/trulioo-sdk/json" \
                 | jq --raw-output '.info.version' 2>/dev/null
             ;;
         java)
             curl -s "https://search.maven.org/solrsearch/select?q=g:%22com.trulioo%22+AND+a:%22trulioo-sdk%22&rows=1000&wt=json" \
                 | jq --raw-output '.response.docs[0].latestVersion' 2>/dev/null
+            ;;
+        ruby)
+            curl -s "https://rubygems.org/api/v1/versions/trulioo_sdk/latest.json" \
+                | jq --raw-output '.version' 2>/dev/null
             ;;
     esac
 }
@@ -43,12 +48,16 @@ function get_published_versions() {
                 | jq --compact-output '.packages[] | map(.version)' 2>/dev/null
             ;;
         python)
-            curl -s "https://pypi.org/pypi/trulioo_sdk/json" \
+            curl -s "https://pypi.org/pypi/trulioo-sdk/json" \
                 | jq --compact-output '.releases | keys' 2>/dev/null
             ;;
         java)
             curl -s "https://search.maven.org/solrsearch/select?q=g:%22com.trulioo%22+AND+a:%22trulioo-sdk%22&core=gav&rows=1000&wt=json" \
                 | jq --compact-output '.response.docs | map(.v)' 2>/dev/null
+            ;;
+        ruby)
+            curl -s "https://rubygems.org/api/v1/versions/trulioo_sdk.json" \
+                | jq --compact-output 'map(.number)' 2>/dev/null
             ;;
     esac
 }

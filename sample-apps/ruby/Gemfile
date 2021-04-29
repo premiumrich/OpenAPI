@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+gem "trulioo_sdk", "~> 1.0"
+gem "sinatra", "~> 2.1"
+gem "awesome_print", "~> 1.9"

@@ -1,0 +1,34 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run Ruby tests
+        image: ruby:2.7
+        caches:
+          - bundler
+        script:
+          - bundle install --path vendor/bundle/
+          - bundle exec rake test
+          - gem build --strict --verbose *.gemspec
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-ruby" master:master
+                - git push "https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-ruby" --tags
+          - step:
+              name: Publish to RubyGems
+              deployment: RubyGems
+              image: ruby:2.7
+              caches:
+                - bundler
+              script:
+                - GEM_HOST_API_KEY=$RUBYGEMS_API_KEY gem push *.gem
+
+definitions:
+  caches:
+    bundler: vendor/bundle/
