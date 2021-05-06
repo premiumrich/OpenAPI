@@ -1,12 +1,7 @@
 # {{projectDescription}}
 
-- API version: {{appVersion}}
-{{#artifactVersion}}
 - Package version: {{artifactVersion}}
-{{/artifactVersion}}
-{{^hideGenerationTimestamp}}
-- Build date: {{generatedDate}}
-{{/hideGenerationTimestamp}}
+- API version: {{appVersion}}
 - Build package: {{generatorClass}}
 
 ## Installation
@@ -33,24 +28,35 @@ Check out our sample application for this SDK in the
 
 ## Getting Started
 
+### Example of testing authentication
+
 ```php
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$configuration = OpenAPI\Client\Configuration::getDefaultConfiguration();
-// Configure API key authorization: ApiKeyAuth
-$configuration->setApiKey('x-trulioo-api-key', 'YOUR-X-TRULIOO-API-KEY');
+use Trulioo\SDK\Configuration;
+use Trulioo\SDK\ApiException;
+use Trulioo\SDK\Api\ConnectionApi;
 
-// If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-// This is optional, `GuzzleHttp\Client` will be used as default.
-$connectionApi = new OpenAPI\Client\Api\ConnectionApi(new GuzzleHttp\Client(), $config);
+$config = Configuration::getDefaultConfiguration()
 
+// Configure API key authorization
+$config->setApiKey('x-trulioo-api-key', 'YOUR-X-TRULIOO-API-KEY');
+
+// Configure mode: 'trial' or 'live'
 $mode = 'trial';
 
+// Construct instance of ConnectionApi with default HTTP client and config
+$connectionApi = new ConnectionApi(null, $config);
+
+// Call ConnectionApi#testAuthentication
 try {
     $result = $connectionApi->testAuthentication($mode);
     echo $result;
-} catch (Exception $e) {
-    echo 'Exception when calling ConnectionApi->testAuthentication: ', $e->getMessage(), PHP_EOL;
+} catch (ApiException $e) {
+    echo "Exception when calling ConnectionApi#testAuthentication\n";
+    echo "Status code:      " . $e->getCode() . "\n";
+    echo "Reason:           " . $e->getResponseBody() . "\n";
+    echo "Response headers: " . json_encode($e->getResponseHeaders()) . "\n";
 }
 ```
 

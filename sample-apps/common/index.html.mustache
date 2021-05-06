@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{{sampleApp.title}}} Sample App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/railscasts.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <header>
+    <h1>{{{sampleApp.title}}} Sample Application</h1>
+    <p class="header-description">
+      This is a sample application that utilizes the
+      <a href="https://github.com/{{{gitUserId}}}/{{{gitRepoId}}}" target="_blank" rel="noreferrer">{{{sampleApp.title}}}</a>.
+      Please visit the SDK respository for documentation about installation, usage, and supported functions.
+    </p>
+    <article class="codeblock">
+      <div class="codeblock-header">
+        <span class="codeblock-header-title">
+          Input your x-trulioo-api-key into line {{{sampleApp.configApiKeyLineNum}}} of <u>{{{sampleApp.configFilePath}}}</u>
+        </span>
+      </div>
+      <div class="codeblock-content">
+        <pre style="white-space: nowrap;">
+          <code class="lang-{{{sampleApp.configFileLang}}}">
+            {{{sampleApp.configApiKeyLine}}}
+          </code>
+        </pre>
+      </div>
+    </article>
+  </header>
+
+  <hr>
+
+  <div>
+    <h2 class="product-heading">Identity Verification Steps</h2>
+    {{#sampleApp.idvSteps}}
+
+    <!-- {{{longName}}} -->
+    <section>
+      <div class="section-header">
+        <span class="section-number">{{{index}}}</span>
+        <h3 class="section-title">{{{shortName}}}</h3>
+      </div>
+      <p class="section-description">
+        {{{description}}}
+      </p>
+      {{#additionalFieldsDescription}}
+      <br>
+      <h4>Explanation of additional fields:</h4>
+      <br>
+      <p class="section-description">
+        {{{additionalFieldsDescription}}}
+      </p>
+      {{/additionalFieldsDescription}}
+      <article class="codeblock">
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Function</span>
+          <button type="submit" id="{{{buttonElementId}}}" class="codeblock-header-button">▶ Run</button>
+        </div>
+        <div class="codeblock-content">
+          <pre style="white-space: nowrap;">
+            <code class="lang-{{{generatorName}}}">
+              {{{demoCode}}}
+            </code>
+          </pre>
+        </div>
+        <div class="codeblock-header">
+          <span class="codeblock-header-title">Response</span>
+        </div>
+        <div class="codeblock-content">
+          <pre><code class="lang-{{{generatorName}}}" id="{{{responseElementId}}}"></code></pre>
+        </div>
+      </article>
+    </section>
+    {{/sampleApp.idvSteps}}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  <script src="/index.js"></script>
+</body>
+
+</html>

@@ -96,7 +96,7 @@ pipelines:
           trigger: manual
           image: atlassian/default-image:2
           script:
-            - bash scripts/deploy-sdk-repos.sh
+            - bash automation/deploy-sdk-repos.sh
       - step:
           name: Deploy to GitHub Repo
           deployment: GitHub Repo

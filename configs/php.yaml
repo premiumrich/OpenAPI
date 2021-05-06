@@ -1,10 +1,11 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.1
+artifactVersion: 1.0.2
 generatorName: php
 packageName: trulioo/trulioo-sdk
 projectDescription: Trulioo PHP SDK
 licenseName: Apache-2.0
+invokerPackage: Trulioo\SDK
 gitRepoId: sdk-php
 outputDir: ./dist/sdk-php/
 templateDir: ./templates/php/
@@ -12,3 +13,48 @@ ignoreFileOverride: ./configs/openapi-generator-ignore/php.openapi-generator-ign
 files:
   .gitattributes: {}
   run-tests.sh: {}
+sampleApp:
+  title: Trulioo PHP SDK
+  configFilePath: sample-app/router.php
+  configFileLang: php
+  configApiKeyLineNum: 11
+  configApiKeyLine: |-
+    $config = Configuration::getDefaultConfiguration()->setApiKey('x-trulioo-api-key', 'YOUR-X-TRULIOO-API-KEY');
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        $mode = 'trial';
+        <br><br>
+        $result = new ConnectionApi()->testAuthentication($mode);
+    getCountries:
+      demoCode: |-
+        $mode = 'trial';
+        <br>
+        $configurationName = 'Identity Verification';
+        <br><br>
+        $result = new ConfigurationApi()->getCountryCodes($mode, $configurationName);
+    getTestEntities:
+      demoCode: |-
+        $mode = 'trial';
+        <br>
+        $configurationName = 'Identity Verification';
+        <br>
+        $countryCode = 'US';
+        <br><br>
+        $result = new ConfigurationApi()->getTestEntities($mode, $configurationName, $countryCode);
+    getConsents:
+      demoCode: |-
+        $mode = 'trial';
+        <br>
+        $configurationName = 'Identity Verification';
+        <br>
+        $countryCode = 'US';
+        <br><br>
+        $result = new ConfigurationApi()->getConsents($mode, $configurationName, $countryCode);
+    verify:
+      demoCode: |-
+        $mode = 'trial';
+        <br>
+        $verifyRequest = new VerifyRequest(); // Initialize with appropriate data
+        <br><br>
+        $result = new VerificationsApi()->verify($mode, $verifyRequest);
