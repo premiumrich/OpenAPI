@@ -1,9 +1,7 @@
 # {{projectDescription}}
 
-- API version: {{appVersion}}
-{{#artifactVersion}}
 - Package version: {{artifactVersion}}
-{{/artifactVersion}}
+- API version: {{appVersion}}
 - Build package: {{generatorClass}}
 
 ## Installation
@@ -28,24 +26,25 @@ Check out our sample application for this SDK in the
 ```javascript
 const Trulioo = require('trulioo-sdk');
 
-const apiClient = Trulioo.ApiClient.instance;
-
 // Configure API key authorization
-apiClient.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
+Trulioo.ApiClient.instance.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
 
-// Create instance of ConnectionApi
+// Construct instance of ConnectionApi
 const connectionApi = new Trulioo.ConnectionApi(apiClient);
 
 // Configure mode: 'trial' or 'live'
 const mode = 'trial';
 
-// Call #testAuthentication and handle promise
+// Call ConnectionApi#testAuthentication
 (async () => {
   try {
     const result = await connectionApi.testAuthentication(mode);
     console.log(result);
   } catch (error) {
-    console.log(`Error when calling ConnectionApi#testAuthentication\n${JSON.stringify(error.response, null, 2)}`);
+    console.log('Error when calling ConnectionApi#testAuthentication');
+    console.log(`Status code:      ${error.status}`);
+    console.log(`Reason:           ${error.response.body}`);
+    console.log(`Response headers: ${JSON.stringify(error.response.headers)}`);
   }
 })();
 ```

@@ -1,8 +1,6 @@
 const Trulioo = require('trulioo-sdk');
 
-const apiClient = Trulioo.ApiClient.instance;
-// Configure API key authorization: ApiKeyAuth
-apiClient.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
+Trulioo.ApiClient.instance.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
 
 // Configure Identity Verification mode
 const mode = 'trial';
@@ -11,52 +9,74 @@ const configurationName = 'Identity Verification';
 module.exports = (app) => {
   // Test Authentication
   app.get('/test-authentication', async (req, res) => {
-    const connectionApi = new Trulioo.ConnectionApi();
     try {
-      const result = await connectionApi.testAuthentication(mode);
+      const result = await new Trulioo.ConnectionApi().testAuthentication(mode);
       res.send(result);
     } catch (error) {
-      res.send(`Error when calling ConnectionApi#testAuthentication<br>${JSON.stringify(error.response, null, 2)}`);
+      res.status(error.status);
+      res.send(
+        'Error when calling ConnectionApi#testAuthentication\n' +
+          `Status code:      ${error.status}\n` +
+          `Reason:           ${error.response.text || error.response.body}\n` +
+          `Response headers: ${JSON.stringify(error.response.headers)}\n`
+      );
     }
   });
 
   // Get Countries
   app.get('/get-countries', async (req, res) => {
-    const configurationApi = new Trulioo.ConfigurationApi();
     try {
-      const result = await configurationApi.getCountryCodes(mode, configurationName);
+      const result = await new Trulioo.ConfigurationApi().getCountryCodes(mode, configurationName);
       res.send(result);
     } catch (error) {
-      res.send(`Error when calling ConfigurationApi#getCountryCodes<br>${JSON.stringify(error.response, null, 2)}`);
+      res.status(error.status);
+      res.send(
+        'Error when calling ConfigurationApi#getCountryCodes\n' +
+          `Status code:      ${error.status}\n` +
+          `Reason:           ${error.response.text || error.response.body}\n` +
+          `Response headers: ${JSON.stringify(error.response.headers)}\n`
+      );
     }
   });
 
   // Get Test Entities
   app.post('/get-test-entities', async (req, res) => {
-    const configurationApi = new Trulioo.ConfigurationApi();
     try {
-      const result = await configurationApi.getTestEntities(mode, configurationName, req.body.countryCode);
+      const result = await new Trulioo.ConfigurationApi().getTestEntities(
+        mode,
+        configurationName,
+        req.body.countryCode
+      );
       res.send(JSON.stringify(result, null, 2));
     } catch (error) {
-      res.send(`Error when calling ConfigurationApi#getTestEntities<br>${JSON.stringify(error.response, null, 2)}`);
+      res.status(error.status);
+      res.send(
+        'Error when calling ConfigurationApi#getTestEntities\n' +
+          `Status code:      ${error.status}\n` +
+          `Reason:           ${error.response.text || error.response.body}\n` +
+          `Response headers: ${JSON.stringify(error.response.headers)}\n`
+      );
     }
   });
 
   // Get Consents
   app.post('/get-consents', async (req, res) => {
-    const configurationApi = new Trulioo.ConfigurationApi();
     try {
-      const result = await configurationApi.getConsents(mode, configurationName, req.body.countryCode);
+      const result = await new Trulioo.ConfigurationApi().getConsents(mode, configurationName, req.body.countryCode);
       res.send(result);
     } catch (error) {
-      res.send(`Error when calling ConfigurationApi#getConsents<br>${JSON.stringify(error.response, null, 2)}`);
+      res.status(error.status);
+      res.send(
+        'Error when calling ConfigurationApi#getConsents\n' +
+          `Status code:      ${error.status}\n` +
+          `Reason:           ${error.response.text || error.response.body}\n` +
+          `Response headers: ${JSON.stringify(error.response.headers)}\n`
+      );
     }
   });
 
   // Verify
   app.post('/verify', async (req, res) => {
-    const verificationsApi = new Trulioo.VerificationsApi();
-
     const verifyRequest = Trulioo.VerifyRequest.constructFromObject({
       AcceptTruliooTermsAndConditions: true,
       CleansedAddress: false,
@@ -88,10 +108,16 @@ module.exports = (app) => {
     });
 
     try {
-      const result = await verificationsApi.verify(mode, verifyRequest);
+      const result = await new Trulioo.VerificationsApi().verify(mode, verifyRequest);
       res.send(JSON.stringify(result, null, 2));
     } catch (error) {
-      res.send(`Error when calling VerificationsApi#verify<br>${JSON.stringify(error.response, null, 2)}`);
+      res.status(error.status);
+      res.send(
+        'Error when calling VerificationsApi#verify\n' +
+          `Status code:      ${error.status}\n` +
+          `Reason:           ${error.response.text || error.response.body}\n` +
+          `Response headers: ${JSON.stringify(error.response.headers)}\n`
+      );
     }
   });
 };

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# Install dependencies with `npm install`
+# Install dependencies first with `npm install`
 
 node src/app.js

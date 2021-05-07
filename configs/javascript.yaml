@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.0
+artifactVersion: 1.0.1
 generatorName: javascript
 packageName: trulioo-sdk
 moduleName: Trulioo
@@ -12,3 +12,48 @@ gitRepoId: sdk-javascript
 outputDir: ./dist/sdk-javascript/
 templateDir: ./templates/javascript/
 ignoreFileOverride: ./configs/openapi-generator-ignore/javascript.openapi-generator-ignore
+sampleApp:
+  title: Trulioo JavaScript SDK
+  configFilePath: sample-app/src/routes.js
+  configFileLang: javascript
+  configApiKeyLineNum: 3
+  configApiKeyLine: |-
+    Trulioo.ApiClient.instance.authentications['ApiKeyAuth'].apiKey = 'YOUR-X-TRULIOO-API-KEY';
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        const mode = 'trial';
+        <br><br>
+        const result = new ConnectionApi().testAuthentication(mode);
+    getCountries:
+      demoCode: |-
+        const mode = 'trial';
+        <br>
+        const configurationName = 'Identity Verification';
+        <br><br>
+        const result = new ConfigurationApi().getCountryCodes(mode, configurationName);
+    getTestEntities:
+      demoCode: |-
+        const mode = 'trial';
+        <br>
+        const configurationName = 'Identity Verification';
+        <br>
+        const countryCode = 'US';
+        <br><br>
+        const result = new ConfigurationApi().getTestEntities(mode, configurationName, countryCode);
+    getConsents:
+      demoCode: |-
+        const mode = 'trial';
+        <br>
+        const configurationName = 'Identity Verification';
+        <br>
+        const countryCode = 'US';
+        <br><br>
+        const result = new ConfigurationApi().getConsents(mode, configurationName, countryCode);
+    verify:
+      demoCode: |-
+        const mode = 'trial';
+        <br>
+        const verifyRequest = new VerifyRequest(); // Initialize with appropriate data
+        <br><br>
+        const result = new VerificationsApi().verify(mode, verifyRequest);
