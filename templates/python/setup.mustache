@@ -1,7 +1,7 @@
 {{>partial_header}}
 
 from os import path
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open(
     path.join(path.abspath(path.dirname(__file__)), "README.md"), encoding="utf-8"
@@ -17,7 +17,9 @@ setup(
     author="Trulioo",
     author_email="support@trulioo.com",
     url="https://github.com/{{gitUserId}}/{{gitRepoId}}/",
-    keywords=["{{projectDescription}}", "OpenAPI", "OpenAPI-Generator"],
+    license="{{licenseName}}",
+    keywords=["{{projectDescription}}"],
+    packages=find_packages(exclude=["test*"]),
     python_requires=">=3.6",
     install_requires=[
         "urllib3 >= 1.25.3",
@@ -33,7 +35,4 @@ setup(
         "pycryptodome>=3.9.0",
         {{/hasHttpSignatureMethods}}
     ],
-    packages=["{{packageName}}"],
-    include_package_data=True,
-    license="{{licenseName}}",
 )

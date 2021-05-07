@@ -1,9 +1,7 @@
 # {{projectDescription}}
 
-- API version: {{appVersion}}
-{{#artifactVersion}}
 - Package version: {{artifactVersion}}
-{{/artifactVersion}}
+- API version: {{appVersion}}
 - Build package: {{generatorClass}}
 
 ## Installation & Usage
@@ -32,24 +30,35 @@ Check out our sample application for this SDK in the
 
 ## Getting Started
 
-Example of test_authentication:
+### Example of testing authentication
 
 ```python
 from trulioo_sdk import Configuration, ApiException
 from trulioo_sdk.apis import ConnectionApi
 
-configuration = trulioo_sdk.Configuration()
-# Configure API key authorization: ApiKeyAuth
-configuration.api_key['ApiKeyAuth'] = 'YOUR-X-TRULIOO-API-KEY'
+config = Configuration()
 
+# Configure API key authorization
+config.api_key["ApiKeyAuth"] = "YOUR-X-TRULIOO-API-KEY"
+
+# Configure mode: "trial" or "live"
 mode = "trial"
 
-with trulioo_sdk.ApiClient(configuration) as api_client:
-    connectionApi = ConnectionApi(api_client)
-    try:
-        result = api.test_authentication(mode)
-    except ApiException as e:
-        print("Exception when calling ConnectionApi.test_authentication: %s\n" % e)
+# Construct instance of ApiClient with config
+api_client = ApiClient(config)
+
+# Construct instance of ConnectionApi with api_client
+connectionApi = ConnectionApi(api_client)
+
+# Call ConnectionApi#test_authentication
+try:
+    result = connectionApi.test_authentication(mode)
+    print(result)
+except ApiException as e:
+    print("Exception when calling ConnectionApi#testAuthentication\n")
+    print("Status code:      " + str(e.status))
+    print("Reason:           " + str(e.body))
+    print("Response headers: " + str(e.headers))
 ```
 
 ## Testing

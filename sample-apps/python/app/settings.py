@@ -1,17 +1,20 @@
 import os
-from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 X_TRULIOO_API_KEY = "YOUR-X-TRULIOO-API-KEY"
 
-SECRET_KEY = "^xj2&%@=66@b_f9eu-ae_v4%%-yu1($ejh*!qpw@4qp=a4hz+8"
+# Configure Identity Verification mode
+TRULIOO_MODE = "trial"
+TRULIOO_CONFIGURATION_NAME = "Identity Verification"
+
 DEBUG = True
+SECRET_KEY = get_random_secret_key()
 ROOT_URLCONF = "app.urls"
-BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "app/templates/")],
+        "DIRS": [os.path.join(os.path.dirname(__file__), "templates/")],
     },
 ]
 STATIC_URL = ""
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "app/static/")]
+STATICFILES_DIRS = [os.path.join(os.path.dirname(__file__), "static/")]

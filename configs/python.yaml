@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.2
+artifactVersion: 1.0.3
 generatorName: python
 packageName: trulioo_sdk
 projectDescription: Trulioo Python SDK
@@ -9,3 +9,48 @@ gitRepoId: sdk-python
 outputDir: ./dist/sdk-python/
 templateDir: ./templates/python/
 ignoreFileOverride: ./configs/openapi-generator-ignore/python.openapi-generator-ignore
+sampleApp:
+  title: Trulioo Python SDK
+  configFilePath: sample-app/app/settings.py
+  configFileLang: python
+  configApiKeyLineNum: 4
+  configApiKeyLine: |-
+    X_TRULIOO_API_KEY = "YOUR-X-TRULIOO-API-KEY"
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        mode = "trial"
+        <br><br>
+        result = ConnectionApi().test_authentication(mode)
+    getCountries:
+      demoCode: |-
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br><br>
+        result = ConfigurationApi().get_country_codes(mode, configuration_name)
+    getTestEntities:
+      demoCode: |-
+        country_code = "US"
+        <br>
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br><br>
+        result = ConfigurationApi().get_test_entities(country_code, mode, configuration_name)
+    getConsents:
+      demoCode: |-
+        country_code = "US"
+        <br>
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br><br>
+        result = ConfigurationApi().get_consents(country_code, mode, configuration_name)
+    verify:
+      demoCode: |-
+        verify_request = VerifyRequest(...) # Initialize with appropriate data
+        <br>
+        mode = "trial"
+        <br><br>
+        result = VerificationsApi().verify(verify_request, mode)
