@@ -1,6 +1,6 @@
 # {{gemSummary}}
 
-- Package version: {{artifactVersion}}
+- Gem version: {{artifactVersion}}
 - API version: {{appVersion}}
 - Build package: {{generatorClass}}
 
@@ -41,18 +41,19 @@ Check out our sample application for this SDK in the
 ```ruby
 require "trulioo_sdk"
 
-# Configure API key authorization
 config = Trulioo::Configuration.new()
+
+# Configure API key authorization
 config.api_key["ApiKeyAuth"] = "YOUR-X-TRULIOO-API-KEY"
+
+# Configure mode: "trial" or "live"
+mode = "trial"
 
 # Initialize instance of Trulioo::ApiClient with config
 api_client = Trulioo::ApiClient.new(config)
 
 # Initialize instance of Trulioo::ConnectionApi with api_client
 connection_api = Trulioo::ConnectionApi.new(api_client)
-
-# Configure mode: "trial" or "live"
-mode = "trial"
 
 # Call Trulioo::ConnectionApi#test_authentication
 begin

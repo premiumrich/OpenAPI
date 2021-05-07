@@ -1,8 +1,5 @@
-require "trulioo_sdk"
 require "json"
 require "awesome_print"
-
-Trulioo.configure.api_key["ApiKeyAuth"] = settings.x_trulioo_api_key
 
 # Index
 get "/" do
@@ -15,7 +12,11 @@ get "/test-authentication" do
     result = Trulioo::ConnectionApi.new().test_authentication(settings.trulioo_mode)
     return result.to_s
   rescue Trulioo::ApiError => error
-    return "Error when calling Trulioo::ConnectionApi#test_authentication<br>#{error.message}"
+    status(error.code)
+    return "Error when calling Trulioo::ConnectionApi#test_authentication\n" +
+             "Status code:      #{error.code}\n" +
+             "Reason:           #{error.response_body}\n" +
+             "Response headers: #{error.response_headers.inspect}\n"
   end
 end
 
@@ -26,31 +27,45 @@ get "/get-countries" do
       .get_country_codes(settings.trulioo_mode, settings.trulioo_configuration_name)
     return result.inspect
   rescue Trulioo::ApiError => error
-    return "Error when calling Trulioo::ConfigurationApi#get_country_codes<br>#{error.message}"
+    status(error.code)
+    return "Error when calling Trulioo::ConfigurationApi#get_country_codes\n" +
+             "Status code:      #{error.code}\n" +
+             "Reason:           #{error.response_body}\n" +
+             "Response headers: #{error.response_headers.inspect}\n"
   end
 end
 
 # Get Test Entities
 post "/get-test-entities" do
   data = JSON.parse(request.body.read)
+
   begin
     result = Trulioo::ConfigurationApi.new()
       .get_test_entities(settings.trulioo_mode, settings.trulioo_configuration_name, data["countryCode"])
     return result.awesome_inspect({ plain: true, index: false })
   rescue Trulioo::ApiError => error
-    return "Error when calling Trulioo::ConfigurationApi#get_test_entities<br>#{error.message}"
+    status(error.code)
+    return "Error when calling Trulioo::ConfigurationApi#get_test_entities\n" +
+             "Status code:      #{error.code}\n" +
+             "Reason:           #{error.response_body}\n" +
+             "Response headers: #{error.response_headers.inspect}\n"
   end
 end
 
 # Get Consents
 post "/get-consents" do
   data = JSON.parse(request.body.read)
+
   begin
     result = Trulioo::ConfigurationApi.new()
       .get_consents(settings.trulioo_mode, settings.trulioo_configuration_name, data["countryCode"])
     return result.awesome_inspect({ plain: true, index: false })
   rescue Trulioo::ApiError => error
-    return "Error when calling Trulioo::ConfigurationApi#get_consents<br>#{error.message}"
+    status(error.code)
+    return "Error when calling Trulioo::ConfigurationApi#get_consents\n" +
+             "Status code:      #{error.code}\n" +
+             "Reason:           #{error.response_body}\n" +
+             "Response headers: #{error.response_headers.inspect}\n"
   end
 end
 
@@ -92,6 +107,10 @@ post "/verify" do
     result = Trulioo::VerificationsApi.new().verify(settings.trulioo_mode, verify_request)
     return result.awesome_inspect({ plain: true, index: false })
   rescue Trulioo::ApiError => error
-    return "Error when calling Trulioo::VerificationsApi#verify<br>#{error.message}"
+    status(error.code)
+    return "Error when calling Trulioo::VerificationsApi#verify\n" +
+             "Status code:      #{error.code}\n" +
+             "Reason:           #{error.response_body}\n" +
+             "Response headers: #{error.response_headers.inspect}\n"
   end
 end

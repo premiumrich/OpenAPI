@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.0
+artifactVersion: 1.0.1
 generatorName: ruby
 gemName: trulioo_sdk
 gemSummary: Trulioo Ruby SDK
@@ -12,3 +12,48 @@ outputDir: ./dist/sdk-ruby/
 templateDir: ./templates/ruby/
 ignoreFileOverride: ./configs/openapi-generator-ignore/ruby.openapi-generator-ignore
 enablePostProcessFile: true
+sampleApp:
+  title: Trulioo Ruby SDK
+  configFilePath: sample-app/app.rb
+  configFileLang: ruby
+  configApiKeyLineNum: 5
+  configApiKeyLine: |-
+    set :x_trulioo_api_key, "YOUR-X-TRULIOO-API-KEY"
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        mode = "trial"
+        <br><br>
+        result = Trulioo::ConnectionApi.new().test_authentication(mode)
+    getCountries:
+      demoCode: |-
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br><br>
+        result = Trulioo::ConfigurationApi.new().get_country_codes(mode, configuration_name)
+    getTestEntities:
+      demoCode: |-
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br>
+        country_code = "US"
+        <br><br>
+        result = Trulioo::ConfigurationApi.new().get_test_entities(mode, configuration_name, country_code)
+    getConsents:
+      demoCode: |-
+        mode = "trial"
+        <br>
+        configuration_name = "Identity Verification"
+        <br>
+        country_code = "US"
+        <br><br>
+        result = Trulioo::ConfigurationApi.new().getConsents(mode, configuration_name, country_code)
+    verify:
+      demoCode: |-
+        mode = "trial"
+        <br>
+        verify_request = Trulioo::VerifyRequest.new() # Initialize with appropriate data
+        <br><br>
+        result = Trulioo::VerificationsApi.new().verify(mode, verify_request)

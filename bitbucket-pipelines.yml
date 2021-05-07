@@ -20,7 +20,7 @@ pipelines:
             name: Run JavaScript tests
             image: node:14.16
             caches:
-              - node
+              - javascript-sdk-node
             script:
               - cd dist/sdk-javascript/
               - npm install
@@ -58,7 +58,7 @@ pipelines:
             name: Run Ruby tests
             image: ruby:2.7
             caches:
-              - bundler
+              - ruby-sdk-bundler
             script:
               - cd dist/sdk-ruby/
               - bundle install --path vendor/bundle/
@@ -107,4 +107,5 @@ pipelines:
 
 definitions:
   caches:
-    bundler: dist/sdk-ruby/vendor/bundle/
+    javascript-sdk-node: dist/sdk-javascript/node_modules/
+    ruby-sdk-bundler: dist/sdk-ruby/vendor/bundle/

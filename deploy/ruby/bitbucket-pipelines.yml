@@ -4,7 +4,7 @@ pipelines:
         name: Run Ruby tests
         image: ruby:2.7
         caches:
-          - bundler
+          - ruby-sdk-bundler
         script:
           - bundle install --path vendor/bundle/
           - bundle exec rake test
@@ -25,10 +25,10 @@ pipelines:
               deployment: RubyGems
               image: ruby:2.7
               caches:
-                - bundler
+                - ruby-sdk-bundler
               script:
                 - GEM_HOST_API_KEY=$RUBYGEMS_API_KEY gem push *.gem
 
 definitions:
   caches:
-    bundler: vendor/bundle/
+    ruby-sdk-bundler: vendor/bundle/
