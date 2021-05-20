@@ -40,6 +40,15 @@ public class DatasourceFieldTest {
     }
 
     @Test
+    public void testMatchPrecision() {
+        String matchPrecision = "matchPrecision";
+        datasourceField.setMatchPrecision(matchPrecision);
+
+        assertEquals(matchPrecision, datasourceField.getMatchPrecision());
+        assertEquals(matchPrecision, new DatasourceField().matchPrecision(matchPrecision).getMatchPrecision());
+    }
+
+    @Test
     public void testEquals() {
         String fieldName = "field";
         DatasourceField datasourceField1 = new DatasourceField().fieldName(fieldName);

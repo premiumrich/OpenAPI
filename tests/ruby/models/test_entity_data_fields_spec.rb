@@ -28,9 +28,9 @@ describe Trulioo::TestEntityDataFields do
 
   it "should have correct array of acceptable JSON keys" do
     expect(Trulioo::TestEntityDataFields.acceptable_attributes).to eql([
-      :"Location",
       :"TestEntityName",
       :"PersonInfo",
+      :"Location",
       :"Communication",
       :"DriverLicence",
       :"NationalIds",
@@ -43,9 +43,9 @@ describe Trulioo::TestEntityDataFields do
 
   it "should have correct array of acceptable attribute types" do
     expect(Trulioo::TestEntityDataFields.openapi_types.values).to eql([
-      :"Location",
       :"String",
       :"PersonInfo",
+      :"Location",
       :"Communication",
       :"DriverLicence",
       :"Array<NationalId>",

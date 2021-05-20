@@ -19,11 +19,13 @@ describe('DatasourceField', () => {
       FieldName: 'FirstGivenName',
       Status: 'match',
       FieldGroup: 'Group1',
+      MatchPrecision: 'testMatchPrecision',
     };
     const datasourceField = DatasourceField.constructFromObject(data);
 
     expect(datasourceField.FieldName).toBe(data.FieldName);
     expect(datasourceField.Status).toBe(data.Status);
     expect(datasourceField.FieldGroup).toBe(data.FieldGroup);
+    expect(datasourceField.MatchPrecision).toBe(data.MatchPrecision);
   });
 });

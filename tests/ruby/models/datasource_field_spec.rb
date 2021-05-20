@@ -16,6 +16,7 @@ describe Trulioo::DatasourceField do
       field_name: SecureRandom.alphanumeric(10),
       status: SecureRandom.alphanumeric(10),
       field_group: SecureRandom.alphanumeric(10),
+      match_precision: SecureRandom.alphanumeric(10),
     }
   }
 
@@ -23,12 +24,14 @@ describe Trulioo::DatasourceField do
     expect(Trulioo::DatasourceField.acceptable_attributes).to eql([
       :"FieldName",
       :"Status",
+      :"MatchPrecision",
       :"FieldGroup",
     ])
   end
 
   it "should have correct array of acceptable attribute types" do
     expect(Trulioo::DatasourceField.openapi_types.values).to eql([
+      :"String",
       :"String",
       :"String",
       :"String",
@@ -54,6 +57,7 @@ describe Trulioo::DatasourceField do
     expect(model.field_name).to be(test_attributes[:field_name])
     expect(model.status).to be(test_attributes[:status])
     expect(model.field_group).to be(test_attributes[:field_group])
+    expect(model.match_precision).to be(test_attributes[:match_precision])
 
     expect(model.valid?).to be true
   end

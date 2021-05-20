@@ -171,29 +171,6 @@ paths:
       security:
         - ApiKeyAuth: []
       description: returns the a business search result.
-  /{mode}/common/v1/ip-info:
-    get:
-      tags:
-        - Common
-      summary: Common Ip Info
-      operationId: Common_IpInfo
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: string
-            text/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: string
-      description: This method returns the client's public IP address.
-      parameters:
-        - $ref: '#/components/parameters/mode'
   /{mode}/configuration/v1/countrysubdivisions/{countryCode}:
     get:
       tags:
@@ -606,30 +583,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -639,30 +625,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -672,12 +667,15 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: MiddleName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -750,30 +748,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -783,30 +790,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -816,12 +832,15 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: MiddleName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -945,30 +964,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -978,30 +1006,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -1011,12 +1048,15 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: MiddleName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields:
                             - FieldName: WatchlistState
@@ -1097,30 +1137,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -1130,30 +1179,39 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: BuildingNumber
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: City
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: County
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: StreetType
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: PostalCode
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields: []
                           Errors: []
@@ -1163,12 +1221,15 @@ paths:
                           DatasourceFields:
                             - FieldName: FirstGivenName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: MiddleName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                             - FieldName: FirstSurName
                               Status: match
+                              MatchPrecision: null
                               FieldGroup: null
                           AppendedFields:
                             - FieldName: WatchlistState
@@ -1315,55 +1376,6 @@ paths:
       security:
         - ApiKeyAuth: []
       description: Download Document
-  /{mode}/worldcheck/v1/profile/{originalTransactionID}/{referenceID}:
-    get:
-      tags:
-        - WorldCheck
-      summary: Get World Check Profile
-      operationId: GetWorldCheckProfile
-      parameters:
-        - $ref: '#/components/parameters/mode'
-        - name: originalTransactionID
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: referenceID
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-            text/json:
-              schema:
-                type: object
-        '400':
-          description: >-
-            Your request could not be processed, there should be more details in
-            the response.
-        '401':
-          description: >-
-            The user name and password you provided is not valid or you are
-            using an account not configured to be an API user.
-        '408':
-          description: The request took longer to process than we waited.
-        '415':
-          description: >-
-            You asked for a media type that we do not support. You should
-            request application/json in the Content-Type header.
-        '500':
-          description: An error happened on the server without a specific message.
-      security:
-        - ApiKeyAuth: []
-      description: >-
-        Returns the corresponding world-check profile of the specified
-        transaction ID and reference ID.
   /{mode}/configuration/v1/consents/{configurationName}/{countryCode}:
     get:
       tags:
@@ -2641,13 +2653,13 @@ components:
     TestEntityDataFields:
       type: object
       properties:
-        Location:
-          $ref: '#/components/schemas/Location'
         TestEntityName:
           description: Friendly name for the test entity
           type: string
         PersonInfo:
           $ref: '#/components/schemas/PersonInfo'
+        Location:
+          $ref: '#/components/schemas/Location'
         Communication:
           $ref: '#/components/schemas/Communication'
         DriverLicence:
@@ -3237,6 +3249,9 @@ components:
           description: ''
           type: string
         Status:
+          description: ''
+          type: string
+        MatchPrecision:
           description: ''
           type: string
         FieldGroup:

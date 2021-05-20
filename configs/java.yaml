@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.0
+artifactVersion: 1.0.2
 generatorName: java
 artifactId: trulioo-sdk
 artifactDescription: Trulioo Java SDK

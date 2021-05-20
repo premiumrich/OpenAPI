@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.1
+artifactVersion: 1.0.2
 generatorName: ruby
 gemName: trulioo_sdk
 gemSummary: Trulioo Ruby SDK

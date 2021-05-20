@@ -8,7 +8,7 @@ from trulioo_sdk.configuration import Configuration
 class TestDatasourceField(unittest.TestCase):
     def test_datasource_field(self):
         datasource_field = DatasourceField(
-            field_name="field", status="status", field_group="field_group"
+            field_name="field", status="status", field_group="field_group", match_precision="match_precision"
         )
 
     def test_datasource_field_unknown_arg(self):

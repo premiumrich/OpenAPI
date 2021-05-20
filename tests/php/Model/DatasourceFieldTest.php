@@ -31,4 +31,10 @@ class DatasourceFieldTest extends TestCase
         $this->datasourceField->setFieldGroup('field_group');
         $this->assertEquals('field_group', $this->datasourceField->getFieldGroup());
     }
+
+    public function testPropertyMatchPrecision()
+    {
+        $this->datasourceField->setMatchPrecision('match_precision');
+        $this->assertEquals('match_precision', $this->datasourceField->getMatchPrecision());
+    }
 }
