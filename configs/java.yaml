@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.2
+artifactVersion: 1.0.3
 generatorName: java
 artifactId: trulioo-sdk
 artifactDescription: Trulioo Java SDK
@@ -14,3 +14,48 @@ hideGenerationTimestamp: true
 outputDir: ./dist/sdk-java/
 templateDir: ./templates/java/
 ignoreFileOverride: ./configs/openapi-generator-ignore/java.openapi-generator-ignore
+sampleApp:
+  title: Trulioo Java SDK
+  configFilePath: sample-app/src/main/resources/application.yml
+  configFileLang: yaml
+  configApiKeyLineNum: 2
+  configApiKeyLine: |-
+    x-trulioo-api-key: YOUR-X-TRULIOO-API-KEY
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        String mode = "trial";
+        <br><br>
+        String result = new ConnectionApi().testAuthentication(mode);
+    getCountries:
+      demoCode: |-
+        String mode = "trial";
+        <br>
+        String configurationName = "Identity Verification";
+        <br><br>
+        List&lt;String&gt; result = new ConfigurationApi().getCountryCodes(mode, configurationName);
+    getTestEntities:
+      demoCode: |-
+        String mode = "trial";
+        <br>
+        String configurationName = "Identity Verification";
+        <br>
+        String countryCode = "US";
+        <br><br>
+        List&lt;TestEntityDataFields&gt; result = new ConfigurationApi().getTestEntities(mode, configurationName, countryCode);
+    getConsents:
+      demoCode: |-
+        String mode = "trial";
+        <br>
+        String configurationName = "Identity Verification";
+        <br>
+        String countryCode = "US";
+        <br><br>
+        List&lt;String&gt; result = new ConfigurationApi().getConsents(mode, configurationName, countryCode);
+    verify:
+      demoCode: |-
+        String mode = "trial";
+        <br>
+        VerifyRequest verifyRequest = new VerifyRequest(); // Initialize with appropriate data
+        <br><br>
+        VerifyResult result = new VerificationsApi().verify(mode, verifyRequest);

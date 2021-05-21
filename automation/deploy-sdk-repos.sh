@@ -4,6 +4,7 @@ declare -A languages=(
     ["javascript"]="JavaScript"
     ["php"]="PHP"
     ["python"]="Python"
+    ["java"]="Java"
     ["ruby"]="Ruby"
 )
 
@@ -20,7 +21,7 @@ fi
 
 git fetch -q origin master:refs/remotes/origin/master
 
-if ! (git merge-base --is-ancestor origin/master qa); then
+if ! (git merge-base --is-ancestor qa origin/master); then
     echo "Error: qa branch has diverged from master branch"
     exit 1
 fi

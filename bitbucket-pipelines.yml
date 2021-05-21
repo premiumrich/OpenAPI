@@ -48,12 +48,12 @@ pipelines:
               - python -m tox
         - step: &run-java-tests
             name: Run Java tests
-            image: maven:3.6.3-jdk-8
+            image: maven:3-jdk-8
             caches:
               - maven
             script:
               - cd dist/sdk-java/
-              - mvn -B test
+              - mvn --batch-mode test
         - step: &run-ruby-tests
             name: Run Ruby tests
             image: ruby:2.7

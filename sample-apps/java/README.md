@@ -14,7 +14,7 @@ Java 1.8 or later is required.
 
     `./start.sh` or `mvn spring-boot:run`
 
-2. Visit [http://localhost:8080](http://localhost:8080) in your browser.
+2. Visit [http://localhost:1055](http://localhost:1055) in your browser.
 
 3. Each step of the Identity Verification flow is accompanied with a description and form. Click on the run button in
    each step to test the function call and view the response.

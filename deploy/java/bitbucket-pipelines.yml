@@ -2,11 +2,11 @@ pipelines:
   default:
     - step: &run-tests
         name: Run Java tests
-        image: maven:3.6.3-jdk-8
+        image: maven:3-jdk-8
         caches:
           - maven
         script:
-          - mvn -B test
+          - mvn --batch-mode test
   branches:
     master:
       - step: *run-tests
@@ -16,5 +16,15 @@ pipelines:
               deployment: GitHub Repo
               image: atlassian/default-image:2
               script:
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-java master:master
-                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-java --tags
+                - git push https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-java master:master
+                - git push https://${GITHUB_TOKEN}@github.com/Trulioo/sdk-java --tags
+          - step:
+              name: Publish to Maven
+              deployment: Maven
+              image: maven:3-jdk-8
+              caches:
+                - maven
+              script:
+                - gpg --version
+                - echo "$GPG_SECRET_KEYS" | base64 --decode | gpg --import --batch --no-tty --yes
+                - mvn --batch-mode --settings settings.xml -DskipTests -Psign-artifacts deploy

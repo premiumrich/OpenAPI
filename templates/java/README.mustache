@@ -1,9 +1,7 @@
 # {{artifactDescription}}
 
+- Artifact version: {{artifactVersion}}
 - API version: {{appVersion}}
-{{#artifactVersion}}
-- Package version: {{artifactVersion}}
-{{/artifactVersion}}
 - Build package: {{generatorClass}}
 
 ## Installation
@@ -16,10 +14,18 @@ Add this dependency to your project's POM:
 
 ```xml
 <dependency>
-    <groupId>{{{groupId}}}</groupId>
-    <artifactId>{{{artifactId}}}</artifactId>
-    <version>{{{artifactVersion}}}</version>
+    <groupId>{{groupId}}</groupId>
+    <artifactId>{{artifactId}}</artifactId>
+    <version>{{artifactVersion}}</version>
 </dependency>
+```
+
+### With [Gradle](https://gradle.org/)
+
+Add this dependency to your project's build file:
+
+```groovy
+implementation '{{groupId}}:{{artifactId}}:{{artifactVersion}}'
 ```
 
 ### With JAR
@@ -38,11 +44,14 @@ Then manually install the following JARs:
 ## Sample Application
 
 Check out our sample application for this SDK in the
-[sample-app](https://github.com/Trulioo/sdk-java/sample-app) folder.
+[sample-app](https://github.com/{{gitUserId}}/{{gitRepoId}}/tree/{{artifactVersion}}/sample-app) folder.
 
 ## Getting Started
 
-It's recommended to create an instance of `ApiClient` per thread in a multithreaded environment to avoid any potential issues.
+It is recommended to create an instance of `ApiClient` per thread in a multithreaded environment to avoid any potential
+issues.
+
+### Example of testing authentication
 
 ```java
 import {{{invokerPackage}}}.ApiClient;
@@ -54,22 +63,25 @@ import {{{apiPackage}}}.ConnectionApi;
 public class TestAuthenticationExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        ApiKeyAuth auth = (ApiKeyAuth) defaultClient.getAuthentication("ApiKeyAuth");
-        auth.setApiKey("X-TRULIOO-API-KEY");
+        // Configure API key authorization
+        ApiKeyAuth auth = (ApiKeyAuth) Configuration.getDefaultApiClient().getAuthentication("ApiKeyAuth");
+        auth.setApiKey("YOUR-X-TRULIOO-API-KEY");
 
-        ConnectionApi connectionApi = new ConnectionApi(defaultClient);
+        // Configure mode: "trial" or "live"
         String mode = "trial";
 
+        // Construct instance of ConnectionApi with default ApiClient
+        ConnectionApi connectionApi = new ConnectionApi();
+
+        // Call ConnectionApi#testAuthentication
         try {
             String result = connectionApi.testAuthentication(mode);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ConnectionApi#testAuthentication");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
+            System.err.println("Status code:      " + e.getCode());
+            System.err.println("Reason:           " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders().toString());
         }
     }
 
@@ -86,7 +98,7 @@ mvn clean test
 
 ## Documentation for APIs
 
-All URIs are relative to *{{basePath}}*
+All URIs are relative to *{{basePath}}*.
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

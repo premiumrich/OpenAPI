@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -28,85 +30,124 @@ import com.trulioo.sdk.model.VerifyResult;
 
 @RestController
 public class ApiController {
+    // Configure Identity Verification mode
+    private static final String MODE = "trial";
+    private static final String CONFIGURATION_NAME = "Identity Verification";
+
     private ApiClient apiClient;
 
     public ApiController(@Value("${secrets.x-trulioo-api-key}") String apiKey) {
-        apiClient = Configuration.getDefaultApiClient();
-        ApiKeyAuth auth = (ApiKeyAuth) apiClient.getAuthentication("ApiKeyAuth");
+        ApiKeyAuth auth = (ApiKeyAuth) Configuration.getDefaultApiClient().getAuthentication("ApiKeyAuth");
         auth.setApiKey(apiKey);
     }
 
     @GetMapping("/test-authentication")
-    public String testAuthentication() {
+    public ResponseEntity testAuthentication() {
         try {
-            return new ConnectionApi(apiClient).testAuthentication("trial");
+            String result = new ConnectionApi().testAuthentication(MODE);
+            return new ResponseEntity<String>(result, HttpStatus.OK);
         } catch (ApiException e) {
-            return e.getResponseBody();
+            String message = "Exception when calling ConnectionApi#testAuthentication\n";
+            message += "Status code:      " + e.getCode() + "\n";
+            message += "Reason:           " + e.getResponseBody() + "\n";
+            message += "Response headers: " + e.getResponseHeaders().toString() + "\n";
+            return new ResponseEntity<String>(message, HttpStatus.valueOf(e.getCode()));
         }
     }
 
     @GetMapping("/get-countries")
-    public String getCountryCodes() {
+    public ResponseEntity getCountryCodes() {
         try {
-            List<String> result = new ConfigurationApi(apiClient).getCountryCodes("trial", "Identity Verification");
-            return result.toString();
+            List<String> result = new ConfigurationApi().getCountryCodes(MODE, CONFIGURATION_NAME);
+            return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
         } catch (ApiException e) {
-            return e.getResponseBody();
+            String message = "Exception when calling ConfigurationApi#getCountryCodes\n";
+            message += "Status code:      " + e.getCode() + "\n";
+            message += "Reason:           " + e.getResponseBody() + "\n";
+            message += "Response headers: " + e.getResponseHeaders().toString() + "\n";
+            return new ResponseEntity<String>(message, HttpStatus.valueOf(e.getCode()));
         }
     }
 
     @PostMapping("/get-test-entities")
-    public String getTestEntities(@RequestBody String body) {
-        JsonObject json = new Gson().fromJson(body, JsonObject.class);
+    public ResponseEntity getTestEntities(@RequestBody String body) {
+        JsonObject data = new Gson().fromJson(body, JsonObject.class);
         try {
-            List<TestEntityDataFields> result = new ConfigurationApi(apiClient).getTestEntities("trial",
-                    "Identity Verification", json.get("countryCode").getAsString());
-            return result.toString();
+            List<TestEntityDataFields> result = new ConfigurationApi().getTestEntities(MODE, CONFIGURATION_NAME,
+                    data.get("countryCode").getAsString());
+            return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
         } catch (ApiException e) {
-            return e.getResponseBody();
+            String message = "Exception when calling ConfigurationApi#getTestEntities\n";
+            message += "Status code:      " + e.getCode() + "\n";
+            message += "Reason:           " + e.getResponseBody() + "\n";
+            message += "Response headers: " + e.getResponseHeaders().toString() + "\n";
+            return new ResponseEntity<String>(message, HttpStatus.valueOf(e.getCode()));
         }
     }
 
     @PostMapping("/get-consents")
-    public String getConsents(@RequestBody String body) {
-        JsonObject json = new Gson().fromJson(body, JsonObject.class);
+    public ResponseEntity getConsents(@RequestBody String body) {
+        JsonObject data = new Gson().fromJson(body, JsonObject.class);
         try {
-            List<String> result = new ConfigurationApi(apiClient).getConsents("trial", "Identity Verification",
-                    json.get("countryCode").getAsString());
-            return result.toString();
+            List<String> result = new ConfigurationApi().getConsents(MODE, CONFIGURATION_NAME,
+                    data.get("countryCode").getAsString());
+            return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
         } catch (ApiException e) {
-            return e.getResponseBody();
+            String message = "Exception when calling ConfigurationApi#getConsents\n";
+            message += "Status code:      " + e.getCode() + "\n";
+            message += "Reason:           " + e.getResponseBody() + "\n";
+            message += "Response headers: " + e.getResponseHeaders().toString() + "\n";
+            return new ResponseEntity<String>(message, HttpStatus.valueOf(e.getCode()));
         }
     }
 
     @PostMapping("/verify")
-    public String verify(@RequestBody String body) {
-        JsonObject json = new Gson().fromJson(body, JsonObject.class);
+    public ResponseEntity verify(@RequestBody String body) {
+        JsonObject data = new Gson().fromJson(body, JsonObject.class);
 
-        PersonInfo personInfo = new PersonInfo().firstGivenName(json.get("firstGivenName").getAsString())
-                .middleName(json.get("middleName").getAsString()).firstSurName(json.get("firstSurName").getAsString())
-                .yearOfBirth(json.get("yearOfBirth").getAsInt()).monthOfBirth(json.get("monthOfBirth").getAsInt())
-                .dayOfBirth(json.get("dayOfBirth").getAsInt());
-        Location location = new Location().buildingNumber(json.get("buildingNumber").getAsString())
-                .streetName(json.get("streetName").getAsString()).streetType(json.get("streetType").getAsString())
-                .postalCode(json.get("postalCode").getAsString());
-        Communication communication = new Communication().telephone(json.get("telephone").getAsString())
-                .emailAddress(json.get("emailAddress").getAsString());
-        Passport passport = new Passport().number(json.get("passportNumber").getAsString());
-        DataFields dataFields = new DataFields().personInfo(personInfo).location(location).communication(communication)
-                .passport(passport);
+        PersonInfo personInfo = new PersonInfo();
+        personInfo.setFirstGivenName(data.get("firstGivenName").getAsString());
+        personInfo.setMiddleName(data.get("middleName").getAsString());
+        personInfo.setFirstSurName(data.get("firstSurName").getAsString());
+        personInfo.setYearOfBirth(data.get("yearOfBirth").getAsInt());
+        personInfo.setMonthOfBirth(data.get("monthOfBirth").getAsInt());
+        personInfo.setDayOfBirth(data.get("dayOfBirth").getAsInt());
 
-        VerifyRequest verifyRequest = new VerifyRequest().dataFields(dataFields);
+        Location location = new Location();
+        location.setBuildingNumber(data.get("buildingNumber").getAsString());
+        location.setStreetName(data.get("streetName").getAsString());
+        location.setStreetType(data.get("streetType").getAsString());
+        location.setPostalCode(data.get("postalCode").getAsString());
+
+        Communication communication = new Communication();
+        communication.setTelephone(data.get("telephone").getAsString());
+        communication.setEmailAddress(data.get("emailAddress").getAsString());
+
+        Passport passport = new Passport();
+        passport.setNumber(data.get("passportNumber").getAsString());
+
+        DataFields dataFields = new DataFields();
+        dataFields.setPersonInfo(personInfo);
+        dataFields.setLocation(location);
+        dataFields.setCommunication(communication);
+        dataFields.setPassport(passport);
+
+        VerifyRequest verifyRequest = new VerifyRequest();
+        verifyRequest.setDataFields(dataFields);
         verifyRequest.setAcceptTruliooTermsAndConditions(true);
         verifyRequest.setCleansedAddress(false);
-        verifyRequest.setConfigurationName("Identity Verification");
-        verifyRequest.setCountryCode(json.get("countryCode").getAsString());
+        verifyRequest.setConfigurationName(CONFIGURATION_NAME);
+        verifyRequest.setCountryCode(data.get("countryCode").getAsString());
 
         try {
-            VerifyResult result = new VerificationsApi(apiClient).verify("trial", verifyRequest);
-            return result.toString();
+            VerifyResult result = new VerificationsApi().verify(MODE, verifyRequest);
+            return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
         } catch (ApiException e) {
-            return e.getResponseBody();
+            String message = "Exception when calling VerificationsApi#verify\n";
+            message += "Status code:      " + e.getCode() + "\n";
+            message += "Reason:           " + e.getResponseBody() + "\n";
+            message += "Response headers: " + e.getResponseHeaders().toString() + "\n";
+            return new ResponseEntity<String>(message, HttpStatus.valueOf(e.getCode()));
         }
     }
 }
