@@ -27,6 +27,7 @@ pipelines:
               caches:
                 - ruby-sdk-bundler
               script:
+                - gem build --strict --verbose *.gemspec
                 - GEM_HOST_API_KEY=$RUBYGEMS_API_KEY gem push *.gem
 
 definitions:
