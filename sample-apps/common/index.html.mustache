@@ -64,7 +64,7 @@
         </div>
         <div class="codeblock-content">
           <pre style="white-space: nowrap;">
-            <code class="lang-{{{generatorName}}}">
+            <code class="lang-{{#sampleApp.codeBlockLang}}{{{sampleApp.codeBlockLang}}}{{/sampleApp.codeBlockLang}}{{^sampleApp.codeBlockLang}}{{{generatorName}}}{{/sampleApp.codeBlockLang}}">
               {{{demoCode}}}
             </code>
           </pre>
@@ -73,7 +73,7 @@
           <span class="codeblock-header-title">Response</span>
         </div>
         <div class="codeblock-content">
-          <pre><code class="lang-{{{generatorName}}}" id="{{{responseElementId}}}"></code></pre>
+          <pre><code class="lang-{{#sampleApp.codeBlockLang}}{{{sampleApp.codeBlockLang}}}{{/sampleApp.codeBlockLang}}{{^sampleApp.codeBlockLang}}{{{generatorName}}}{{/sampleApp.codeBlockLang}}" id="{{{responseElementId}}}"></code></pre>
         </div>
       </article>
     </section>

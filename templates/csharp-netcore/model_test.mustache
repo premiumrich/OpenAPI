@@ -1,0 +1,91 @@
+using System;
+using Xunit;
+using {{packageName}}.Model;
+
+
+namespace {{packageName}}.Test
+{
+  public class {{classname}}Tests
+  {
+    {{#models}}
+    {{#model}}
+    private {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+
+    public {{classname}}Tests()
+    {
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}();
+    }
+    {{#allVars}}
+
+    [Fact]
+    public void {{nameInCamelCase}}Test()
+    {
+      {{{datatypeWithEnum}}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{nameInCamelCase}} = {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}};
+
+      Assert.Equal({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{nameInCamelCase}});
+      Assert.Equal({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}, (new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}})).{{nameInCamelCase}});
+    }
+    {{/allVars}}
+    {{#allVars}}
+    {{#-first}}
+
+    [Fact]
+    public void EqualsTest()
+    {
+      {{{datatypeWithEnum}}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+      {{classname}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1 = new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}});
+
+      Assert.Equal({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1, {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1);
+      Assert.Equal({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1, new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}));
+      Assert.NotEqual({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1, new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} + "1"));
+      Assert.False({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}1.Equals(null));
+    }
+
+    [Fact]
+    public void EqualsObjectCastTest()
+    {
+      {{{datatypeWithEnum}}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+      {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}});
+      object obj = new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}});
+
+      Assert.True({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.Equals(obj));
+    }
+
+    [Fact]
+    public void GetHashcodeTest()
+    {
+      {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1 = new {{classname}}();
+      {{#allVars}}
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1.{{nameInCamelCase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+      {{/allVars}}
+
+      {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}2 = new {{classname}}();
+      {{#allVars}}
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}2.{{nameInCamelCase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+      {{/allVars}}
+
+      Assert.Equal({{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}1.GetHashCode(), {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}2.GetHashCode());
+    }
+
+    [Fact]
+    public void ToStringTest()
+    {
+      {{{datatypeWithEnum}}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+
+      Assert.Equal(new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}).ToString(), new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}).ToString());
+    }
+
+    [Fact]
+    public void ToJsonTest()
+    {
+      {{{datatypeWithEnum}}} {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}} = "test-{{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}";
+
+      Assert.Equal(new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}).ToJson(), new {{classname}}({{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}: {{#lambda.camelcase}}{{name}}{{/lambda.camelcase}}).ToJson());
+    }
+    {{/-first}}
+    {{/allVars}}
+    {{/model}}
+    {{/models}}
+  }
+}

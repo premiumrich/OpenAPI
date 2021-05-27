@@ -26,4 +26,8 @@ mkdir -p dist/sdk-ruby/spec/
 cp -r tests/ruby/. dist/sdk-ruby/spec/
 cp -r deploy/ruby/. dist/sdk-ruby/
 
+echo "[.NET Core SDK] Bundling supporting files..."
+cp -r tests/csharp-netcore/. dist/sdk-csharp-netcore/src/
+cp -r deploy/csharp-netcore/. dist/sdk-csharp-netcore/
+
 echo

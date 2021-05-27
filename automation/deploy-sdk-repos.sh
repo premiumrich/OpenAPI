@@ -6,6 +6,7 @@ declare -A languages=(
     ["python"]="Python"
     ["java"]="Java"
     ["ruby"]="Ruby"
+    ["csharp-netcore"]="C# .NET Core"
 )
 
 

@@ -6,6 +6,7 @@ declare -A languages=(
     ["python"]="Python"
     ["java"]="Java"
     ["ruby"]="Ruby"
+    ["csharp-netcore"]="C# .NET Core"
 )
 
 # Arguments: language
@@ -31,6 +32,10 @@ function get_latest_version() {
         ruby)
             curl -s "https://rubygems.org/api/v1/versions/trulioo_sdk/latest.json" \
                 | jq --raw-output '.version' 2>/dev/null
+            ;;
+        csharp-netcore)
+            curl -s "https://api.nuget.org/v3-flatcontainer/Trulioo.SDK/index.json" \
+                | jq --raw-output '.versions[-1]' 2>/dev/null
             ;;
     esac
 }
@@ -58,6 +63,10 @@ function get_published_versions() {
         ruby)
             curl -s "https://rubygems.org/api/v1/versions/trulioo_sdk.json" \
                 | jq --compact-output 'map(.number)' 2>/dev/null
+            ;;
+        csharp-netcore)
+            curl -s "https://api.nuget.org/v3-flatcontainer/Trulioo.SDK/index.json" \
+                | jq --raw-output '.versions' 2>/dev/null
             ;;
     esac
 }
@@ -105,7 +114,7 @@ for lang in "${!languages[@]}"; do
         else
             echo "[${languages[$lang]} SDK] Current version can be published"
         fi
-    else 
+    else
         echo "[${languages[$lang]} SDK] No changes were detected"
     fi
     echo

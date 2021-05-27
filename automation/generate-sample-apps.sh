@@ -30,4 +30,10 @@ cp -r sample-apps/ruby/. dist/sdk-ruby/sample-app/
 node automation/generate-sample-app.js configs/ruby.yaml dist/sdk-ruby/sample-app/static/
 cp sample-apps/common/{index.js,styles.css} dist/sdk-ruby/sample-app/static/
 
+echo "[.NET Core SDK] Generating sample app..."
+mkdir -p dist/sdk-csharp-netcore/sample-app/wwwroot/
+cp -r sample-apps/csharp-netcore/. dist/sdk-csharp-netcore/sample-app/
+node automation/generate-sample-app.js configs/csharp-netcore.yaml dist/sdk-csharp-netcore/sample-app/wwwroot/
+cp sample-apps/common/{index.js,styles.css} dist/sdk-csharp-netcore/sample-app/wwwroot/
+
 echo

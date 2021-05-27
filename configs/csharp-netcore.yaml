@@ -1,0 +1,58 @@
+'!include': ./shared/common.yaml
+
+generatorName: csharp-netcore
+packageName: Trulioo.SDK
+artifactVersion: 1.0.0
+projectDescription: Trulioo C# .NET Core SDK
+validatable: false
+licenseId: Apache-2.0
+gitRepoId: sdk-csharp-netcore
+outputDir: ./dist/sdk-csharp-netcore/
+templateDir: ./templates/csharp-netcore/
+ignoreFileOverride: ./configs/openapi-generator-ignore/csharp-netcore.openapi-generator-ignore
+sampleApp:
+  title: Trulioo .NET Core SDK
+  configFilePath: sample-app/appsettings.json
+  configFileLang: json
+  configApiKeyLineNum: 10
+  configApiKeyLine: |-
+    "XTruliooApiKey": "YOUR-X-TRULIOO-API-KEY"
+  codeBlockLang: cs
+  idvSteps:
+    testAuthentication:
+      demoCode: |-
+        string mode = "trial";
+        <br><br>
+        string result = new ConnectionApi().TestAuthentication(mode);
+    getCountries:
+      demoCode: |-
+        string mode = "trial";
+        <br>
+        string configurationName = "Identity Verification";
+        <br><br>
+        List&lt;string &gt; result = new ConfigurationApi().GetCountryCodes(mode, configurationName);
+    getTestEntities:
+      demoCode: |-
+        string mode = "trial";
+        <br>
+        string configurationName = "Identity Verification";
+        <br>
+        string countryCode = "US";
+        <br><br>
+        List&lt;TestEntityDataFields&gt; result = new ConfigurationApi().GetTestEntities(mode, configurationName, countryCode);
+    getConsents:
+      demoCode: |-
+        string mode = "trial";
+        <br>
+        string configurationName = "Identity Verification";
+        <br>
+        string countryCode = "US";
+        <br><br>
+        List&lt;string &gt; result = new ConfigurationApi().GetConsents(mode, configurationName, countryCode);
+    verify:
+      demoCode: |-
+        string mode = "trial";
+        <br>
+        VerifyRequest verifyRequest = new VerifyRequest(); // Initialize with appropriate data
+        <br><br>
+        VerifyResult result = new VerificationsApi().Verify(mode, verifyRequest);

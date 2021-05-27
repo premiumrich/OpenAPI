@@ -1,0 +1,4 @@
+**/sdk-csharp-netcore/.openapi-generator-ignore
+**/sdk-csharp-netcore/git_push.sh
+**/sdk-csharp-netcore/*.sln
+**/sdk-csharp-netcore/appveyor.yml

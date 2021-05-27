@@ -64,6 +64,14 @@ pipelines:
               - bundle install --path vendor/bundle/
               - bundle exec rake test
               - gem build --strict --verbose *.gemspec
+        - step: &run-csharp-netcore-tests
+            name: Run C# .NET Core tests
+            image: mcr.microsoft.com/dotnet/sdk:3.1
+            caches:
+              - dotnetcore
+            script:
+              - cd dist/sdk-csharp-netcore/
+              - dotnet test src/Trulioo.SDK.Test/ "--logger:junit;LogFilePath=../test-reports/junit.xml" /p:CollectCoverage=true
   branches:
     master:
       - step: *generate-sdks
@@ -74,6 +82,7 @@ pipelines:
           - step: *run-python-tests
           - step: *run-java-tests
           - step: *run-ruby-tests
+          - step: *run-csharp-netcore-tests
       - step:
           name: Deploy to QA Branch
           deployment: QA Branch
@@ -90,6 +99,7 @@ pipelines:
           - step: *run-python-tests
           - step: *run-java-tests
           - step: *run-ruby-tests
+          - step: *run-csharp-netcore-tests
       - step:
           name: Deploy to SDK Repos
           deployment: SDK Repos

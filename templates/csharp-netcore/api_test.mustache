@@ -1,0 +1,192 @@
+using Newtonsoft.Json;
+using RestSharp;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
+using WireMock.Server;
+using WireMock.Settings;
+using WireMock.Util;
+using Xunit;
+using {{packageName}}.Api;
+using {{packageName}}.Client;
+using {{packageName}}.Model;
+
+
+namespace {{packageName}}.Test
+{
+  public class {{classname}}Tests : IDisposable
+  {
+    private {{classname}} {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}};
+    private WireMockServer mockServer;
+    private const string TEST_API_KEY = "test-api-key";
+
+    public {{classname}}Tests()
+    {
+      int port = PortUtils.FindFreeTcpPort();
+      Configuration config = new Configuration();
+      config.BasePath = "http://localhost:" + port;
+      config.ApiKey.Add("x-trulioo-api-key", TEST_API_KEY);
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(config);
+
+      mockServer = WireMockServer.Start(port);
+    }
+
+    public void Dispose() => Dispose(true);
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        mockServer.Stop();
+        mockServer.Dispose();
+      }
+    }
+
+    /* Test constructors */
+    [Fact]
+    public void {{classname}}Test()
+    {
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}();
+      Assert.Equal("https://gateway.trulioo.com", {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.GetBasePath());
+    }
+
+    [Fact]
+    public void {{classname}}BasePathTest()
+    {
+      string basePath = "http://abc.io";
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(basePath);
+      Assert.Equal(basePath, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.GetBasePath());
+    }
+
+    [Fact]
+    public void {{classname}}ConfigurationTest()
+    {
+      Configuration config = new Configuration();
+      config.BasePath = "http://abc.io";
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(config);
+      Assert.Equal(config.BasePath, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.GetBasePath());
+    }
+
+    [Fact]
+    public void {{classname}}ApiAllParamsTest()
+    {
+      Configuration config = new Configuration();
+      ApiClient client = new ApiClient();
+      ApiClient asyncClient = new ApiClient();
+      {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}} = new {{classname}}(client, asyncClient, config);
+      Assert.Equal(config, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.Configuration);
+      Assert.Equal(client, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.Client);
+      Assert.Equal(asyncClient, {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.AsynchronousClient);
+    }
+
+    [Fact]
+    public void {{classname}}NullParamsTest()
+    {
+      ArgumentNullException e0 = Assert.Throws<ArgumentNullException>(() => new {{classname}}((Configuration) null));
+      Assert.Equal("Value cannot be null. (Parameter 'configuration')", e0.Message);
+
+      ArgumentNullException e1 = Assert.Throws<ArgumentNullException>(() => new {{classname}}((ApiClient) null, new ApiClient(), new Configuration()));
+      Assert.Equal("Value cannot be null. (Parameter 'client')", e1.Message);
+
+      ArgumentNullException e2 = Assert.Throws<ArgumentNullException>(() => new {{classname}}(new ApiClient(), (ApiClient) null, new Configuration()));
+      Assert.Equal("Value cannot be null. (Parameter 'asyncClient')", e2.Message);
+
+      ArgumentNullException e3 = Assert.Throws<ArgumentNullException>(() => new {{classname}}(new ApiClient(), new ApiClient(), (Configuration) null));
+      Assert.Equal("Value cannot be null. (Parameter 'configuration')", e3.Message);
+    }
+    {{#operations}}
+    {{#operation}}
+
+    /* Test {{operationId}} */
+    [Fact]
+    public async Task {{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}Test()
+    {
+      {{#returnType}}
+      {{{returnType}}} expected = new {{{returnType}}}();
+      {{/returnType}}
+
+      mockServer
+          .Given(
+              Request.Create()
+                  .WithPath("__REPLACE__")
+                  .WithHeader("x-trulioo-api-key", TEST_API_KEY)
+                  .UsingGet()
+          )
+          .RespondWith(
+              Response.Create()
+                  .WithStatusCode(200)
+                  .WithHeader("Content-Type", "application/json")
+                  .WithBody(JsonConvert.SerializeObject(expected))
+          );
+
+      try
+      {
+        {{#returnType}}{{{returnType}}} result = {{/returnType}}{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+        {{#returnType}}
+        Assert.Equal(result, expected);
+        {{/returnType}}
+      } catch (ApiException)
+      {
+        Assert.True(false, "Unexpected ApiException");
+      }
+
+      try
+      {
+        {{#returnType}}{{{returnType}}} result = await {{/returnType}}{{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}Async({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+        {{#returnType}}
+        Assert.Equal(result, expected);
+        {{/returnType}}
+      } catch (ApiException)
+      {
+        Assert.True(false, "Unexpected ApiException");
+      }
+    }
+
+    [Fact]
+    public void {{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}UnauthorizedTest()
+    {
+      mockServer
+          .Given(
+              Request.Create()
+                  .WithPath("__REPLACE__")
+                  .WithHeader("x-trulioo-api-key", TEST_API_KEY)
+                  .UsingGet()
+          )
+          .RespondWith(
+            Response.Create()
+              .WithStatusCode(401)
+          );
+
+      Assert.Throws<ApiException>(() => {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}}));
+    }
+
+    [Fact]
+    public void {{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}NullParamsTest()
+    {
+      {{#allParams}}
+      ApiException e{{-index}} = Assert.Throws<ApiException>(() => {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}}));
+      Assert.Equal("Missing required parameter '{{paramName}}' when calling {{classname}}->{{operationId}}", e{{-index}}.Message);
+      {{^-last}}
+
+      {{/-last}}
+      {{/allParams}}
+    }
+
+    [Fact]
+    public async Task {{#lambda.titlecase}}{{operationId}}{{/lambda.titlecase}}AsyncNullParamsTest()
+    {
+      {{#allParams}}
+      ApiException e{{-index}} = await Assert.ThrowsAsync<ApiException>(() => {{#lambda.camelcase}}{{classname}}{{/lambda.camelcase}}.{{operationId}}Async({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}}));
+      Assert.Equal("Missing required parameter '{{paramName}}' when calling {{classname}}->{{operationId}}", e{{-index}}.Message);
+      {{^-last}}
+
+      {{/-last}}
+      {{/allParams}}
+    }
+    {{/operation}}
+    {{/operations}}
+  }
+}

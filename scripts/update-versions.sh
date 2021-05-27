@@ -6,6 +6,7 @@ declare -A languages=(
     ["python"]="Python"
     ["java"]="Java"
     ["ruby"]="Ruby"
+    ["csharp-netcore"]="C# .NET Core"
 )
 
 
@@ -53,7 +54,7 @@ for lang in "${!languages[@]}"; do
             sed -i "s/artifactVersion: .*$/artifactVersion: $new_version/g" "$config_file"
             git add "$config_file" 2>/dev/null
         fi
-    else 
+    else
         echo "[${languages[$lang]} SDK] No changes were detected"
     fi
     echo

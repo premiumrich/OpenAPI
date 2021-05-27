@@ -1,0 +1,29 @@
+pipelines:
+  default:
+    - step: &run-tests
+        name: Run C# .NET Core tests
+        image: mcr.microsoft.com/dotnet/sdk:3.1
+        caches:
+          - dotnetcore
+        script:
+          - dotnet test src/Trulioo.SDK.Test/ "--logger:junit;LogFilePath=../test-reports/junit.xml" /p:CollectCoverage=true
+  branches:
+    master:
+      - step: *run-tests
+      - parallel:
+          - step:
+              name: Deploy to GitHub Repo
+              deployment: GitHub Repo
+              image: atlassian/default-image:2
+              script:
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-csharp-netcore master:master
+                - git push https://$GITHUB_TOKEN@github.com/Trulioo/sdk-csharp-netcore --tags
+          - step:
+              name: Publish to NuGet
+              deployment: NuGet
+              image: mcr.microsoft.com/dotnet/sdk:3.1
+              caches:
+                - dotnetcore
+              script:
+                - dotnet pack ./src/Trulioo.SDK/Trulioo.SDK.csproj --configuration Release
+                - dotnet nuget push ./src/Trulioo.SDK/bin/Release/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
