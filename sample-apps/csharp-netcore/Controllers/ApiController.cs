@@ -39,7 +39,6 @@ namespace Trulioo.SampleApp.Controllers
         return StatusCode(e.ErrorCode, new Trulioo.SampleApp.Models.ObjectResult(
           errorCode: e.ErrorCode,
           message: e.Message,
-          headers: e.Headers,
           operation: "ConnectionApi#TestAuthentication"
         ));
       }
@@ -51,14 +50,13 @@ namespace Trulioo.SampleApp.Controllers
       try
       {
         List<string> result = new ConfigurationApi(config).GetCountryCodes(Mode, ConfigurationName);
-        return new OkObjectResult(JsonConvert.SerializeObject(result));
+        return new OkObjectResult(JsonConvert.SerializeObject(result, Formatting.Indented));
       }
       catch (ApiException e)
       {
         return StatusCode(e.ErrorCode, new Trulioo.SampleApp.Models.ObjectResult(
           errorCode: e.ErrorCode,
           message: e.Message,
-          headers: e.Headers,
           operation: "ConfigurationApi#GetCountryCodes"
         ));
       }
@@ -72,14 +70,13 @@ namespace Trulioo.SampleApp.Controllers
       {
         JObject obj = JObject.Parse(body);
         List<TestEntityDataFields> result = new ConfigurationApi(config).GetTestEntities(Mode, ConfigurationName, obj["countryCode"].ToString());
-        return new OkObjectResult(JsonConvert.SerializeObject(result));
+        return new OkObjectResult(JsonConvert.SerializeObject(result, Formatting.Indented));
       }
       catch (ApiException e)
       {
         return StatusCode(e.ErrorCode, new Trulioo.SampleApp.Models.ObjectResult(
           errorCode: e.ErrorCode,
           message: e.Message,
-          headers: e.Headers,
           operation: "ConfigurationApi#GetTestEntities"
         ));
       }
@@ -93,14 +90,13 @@ namespace Trulioo.SampleApp.Controllers
       {
         JObject obj = JObject.Parse(body);
         List<string> result = new ConfigurationApi(config).GetConsents(Mode, ConfigurationName, obj["countryCode"].ToString());
-        return new OkObjectResult(JsonConvert.SerializeObject(result));
+        return new OkObjectResult(JsonConvert.SerializeObject(result, Formatting.Indented));
       }
       catch (ApiException e)
       {
         return StatusCode(e.ErrorCode, new Trulioo.SampleApp.Models.ObjectResult(
           errorCode: e.ErrorCode,
           message: e.Message,
-          headers: e.Headers,
           operation: "ConfigurationApi#GetConsents"
         ));
       }
@@ -146,14 +142,13 @@ namespace Trulioo.SampleApp.Controllers
       try
       {
         VerifyResult result = new VerificationsApi(config).Verify(Mode, verifyRequest);
-        return new OkObjectResult(JsonConvert.SerializeObject(result));
+        return new OkObjectResult(JsonConvert.SerializeObject(result, Formatting.Indented));
       }
       catch (ApiException e)
       {
         return StatusCode(e.ErrorCode, new Trulioo.SampleApp.Models.ObjectResult(
           errorCode: e.ErrorCode,
           message: e.Message,
-          headers: e.Headers,
           operation: "VerificationsApi#Verify"
         ));
       }

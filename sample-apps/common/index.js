@@ -17,10 +17,6 @@ const formatErrorResponse = (responseBody) => {
     `Reason:            ${obj.message}`,
   ];
 
-  if (obj.headers) {
-    detailedErrorMessageStrings.push(`Response headers:  ${JSON.stringify(obj.headers, null, 2)}`);
-  }
-
   return detailedErrorMessageStrings.join('\n');
 };
 

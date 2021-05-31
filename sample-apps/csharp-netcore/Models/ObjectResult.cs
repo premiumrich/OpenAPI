@@ -6,11 +6,10 @@ namespace Trulioo.SampleApp.Models
   public class ObjectResult
   {
 
-    public ObjectResult (int errorCode, string message, Multimap<string, string> headers, string operation)
+    public ObjectResult (int errorCode, string message, string operation)
     {
       this.ErrorCode = errorCode;
       this.Message = message;
-      this.Headers = headers;
       this.Operation =  operation;
     }
 
@@ -21,12 +20,6 @@ namespace Trulioo.SampleApp.Models
     }
 
     public string Message
-    {
-      get;
-      set;
-    }
-
-    public Multimap<string, string> Headers
     {
       get;
       set;
