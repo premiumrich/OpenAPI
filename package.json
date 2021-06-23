@@ -1,10 +1,12 @@
 {
   "name": "trulioo-openapi",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "generate": "env-cmd -f configs/generator.env openapi-generator-cli batch configs/*.yaml",
     "generate:clean": "rm -rf dist/ && npm run generate",
-    "postgenerate": "bash automation/generate-sample-apps.sh && bash automation/bundle.sh"
+    "postgenerate": "bash automation/generate-sample-apps.sh && bash automation/bundle.sh",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -13,11 +15,20 @@
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.1.26",
+    "chromedriver": "^90.0.1",
     "env-cmd": "^10.1.0",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
     "husky": "^4.3.8",
+    "jest": "^27.0.4",
     "js-beautify": "^1.13.13",
     "js-yaml": "^4.1.0",
+    "kill-port": "^1.6.1",
     "merge-deep": "^3.0.3",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "selenium-webdriver": "^4.0.0-beta.4",
+    "wait-port": "^0.2.9"
   }
 }

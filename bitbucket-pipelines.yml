@@ -72,6 +72,13 @@ pipelines:
             script:
               - cd dist/sdk-csharp-netcore/
               - dotnet test src/Trulioo.SDK.Test/ "--logger:junit;LogFilePath=../test-reports/junit.xml" /p:CollectCoverage=true
+        - step: &run-functional-tests
+            name: Run functional tests
+            image: node:14-buster
+            script:
+              - bash automation/install-dependencies.sh
+              - npm install
+              - npm test
   branches:
     master:
       - step: *generate-sdks
@@ -83,6 +90,7 @@ pipelines:
           - step: *run-java-tests
           - step: *run-ruby-tests
           - step: *run-csharp-netcore-tests
+          - step: *run-functional-tests
       - step:
           name: Deploy to QA Branch
           deployment: QA Branch
@@ -100,6 +108,7 @@ pipelines:
           - step: *run-java-tests
           - step: *run-ruby-tests
           - step: *run-csharp-netcore-tests
+          - step: *run-functional-tests
       - step:
           name: Deploy to SDK Repos
           deployment: SDK Repos

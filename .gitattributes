@@ -1,1 +1,2 @@
 *.mustache linguist-vendored
+*.sh text=auto eol=lf

@@ -19,7 +19,8 @@ File/Folder                         | Description
 `sample-apps/`                      | Sample apps for every SDK
 `scripts/`                          | Miscellaneous helper scripts
 `templates/`                        | Mustache templates and other supporting files for every SDK
-`tests/`                            | Manually written tests for API and model classes of every SDK
+`tests/`                            | Unit tests for every SDK
+`tests/functional/`                 | Functional tests for every SDK sample app
 `bitbucket-pipelines.yml`           | Bitbucket pipelines for CI/CD
 `developer.yaml`                    | Trulioo OpenAPI 3.0 specification that gets automatically updated
 `openapitools.json`                 | Version configuration for OpenAPI Generator
@@ -29,6 +30,10 @@ File/Folder                         | Description
 
 Run `npm ci` to install dependencies, then `npm run generate` to build SDKs in the `dist/` folder
 
-## How to Test SDKs
+## How to Run Unit Tests
 
 After generating SDKs, follow the testing instructions in the `README.md` of every SDK in `dist/`
+
+## How to Run Functional Tests
+
+After [generating SDKs](#how-to-generate-sdks), run the `automation/install-dependencies.sh` script, then `npm test`
