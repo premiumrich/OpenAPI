@@ -81,8 +81,6 @@ else
     branch_base=$(git merge-base origin/master HEAD)
 fi
 
-diff=$(git diff --name-only "$branch_base")
-
 spec_file="developer.yaml"
 
 exit_status=0
@@ -100,6 +98,9 @@ for lang in "${!languages[@]}"; do
     templates_folder="templates/${lang}/"
     tests_folder="tests/${lang}/"
     sample_app_folder="sample-apps/${lang}/"
+
+    diff=$(git diff --name-only "$branch_base" :!$templates_folder/README.mustache)
+
     if [[ \
         $diff =~ $spec_file || \
         $diff =~ $config_file || \
