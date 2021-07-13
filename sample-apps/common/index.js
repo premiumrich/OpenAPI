@@ -77,7 +77,7 @@ bindApiCall(
   '/get-consents',
   'POST',
   JSON.stringify({
-    countryCode: 'US',
+    countryCode: 'AU',
   })
 );
 

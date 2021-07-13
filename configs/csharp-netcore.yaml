@@ -2,7 +2,7 @@
 
 generatorName: csharp-netcore
 packageName: Trulioo.SDK
-artifactVersion: 4.0.0
+artifactVersion: 4.0.1
 projectDescription: Trulioo C# .NET Core SDK
 validatable: false
 licenseId: Apache-2.0
@@ -46,7 +46,7 @@ sampleApp:
         <br>
         string configurationName = "Identity Verification";
         <br>
-        string countryCode = "US";
+        string countryCode = "AU";
         <br><br>
         List&lt;string &gt; result = new ConfigurationApi().GetConsents(mode, configurationName, countryCode);
     verify:

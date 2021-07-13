@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.3
+artifactVersion: 1.0.4
 generatorName: javascript
 packageName: trulioo-sdk
 moduleName: Trulioo
@@ -47,7 +47,7 @@ sampleApp:
         <br>
         const configurationName = 'Identity Verification';
         <br>
-        const countryCode = 'US';
+        const countryCode = 'AU';
         <br><br>
         const result = new ConfigurationApi().getConsents(mode, configurationName, countryCode);
     verify:

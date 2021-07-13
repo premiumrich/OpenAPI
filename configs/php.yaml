@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.3
+artifactVersion: 1.0.4
 generatorName: php
 packageName: trulioo/trulioo-sdk
 projectDescription: Trulioo PHP SDK
@@ -48,7 +48,7 @@ sampleApp:
         <br>
         $configurationName = 'Identity Verification';
         <br>
-        $countryCode = 'US';
+        $countryCode = 'AU';
         <br><br>
         $result = new ConfigurationApi()->getConsents($mode, $configurationName, $countryCode);
     verify:

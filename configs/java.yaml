@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.3
+artifactVersion: 1.0.4
 generatorName: java
 artifactId: trulioo-sdk
 artifactDescription: Trulioo Java SDK
@@ -49,7 +49,7 @@ sampleApp:
         <br>
         String configurationName = "Identity Verification";
         <br>
-        String countryCode = "US";
+        String countryCode = "AU";
         <br><br>
         List&lt;String&gt; result = new ConfigurationApi().getConsents(mode, configurationName, countryCode);
     verify:

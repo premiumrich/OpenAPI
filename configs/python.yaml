@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.4
+artifactVersion: 1.0.5
 generatorName: python
 packageName: trulioo_sdk
 projectDescription: Trulioo Python SDK
@@ -40,7 +40,7 @@ sampleApp:
         result = ConfigurationApi().get_test_entities(country_code, mode, configuration_name)
     getConsents:
       demoCode: |-
-        country_code = "US"
+        country_code = "AU"
         <br>
         mode = "trial"
         <br>
