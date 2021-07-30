@@ -5,13 +5,21 @@
 
 apt-get update
 apt-get install -y chromium=90.*
-apt-get install -y php php-curl php-mbstring
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 printf "\n[JavaScript SDK] Installing dependencies for sample app\n"
 cd dist/sdk-javascript/sample-app/
 npm install
 
 printf "\n[PHP SDK] Installing dependencies for sample app\n"
+apt-get install -y php php-curl php-mbstring
+curl -sS \
+    https://raw.githubusercontent.com/composer/getcomposer.org/7eaf36ba91c05f00e46bc4a9d3fc5fe12d5160e5/web/installer \
+    | php -- --install-dir=/usr/local/bin --filename=composer
 cd ../../sdk-php/sample-app/
 composer install
+
+printf "\n[Python SDK] Installing dependencies for sample app\n"
+update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+apt-get install -y python3-pip
+cd ../../sdk-python/sample-app/
+python -m pip install -r requirements.txt
