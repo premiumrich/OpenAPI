@@ -23,3 +23,8 @@ update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 apt-get install -y python3-pip
 cd ../../sdk-python/sample-app/
 python -m pip install -r requirements.txt
+
+printf "\n[Ruby SDK] Installing for sample app\n"
+apt-get install -y ruby bundler
+cd ../../sdk-ruby/sample-app/
+bundle install

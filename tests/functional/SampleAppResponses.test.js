@@ -6,7 +6,8 @@ describe('Sample app responses', () => {
   const languageCases = [
     ['JavaScript', 'javascript'],
     ['PHP', 'php'],
-    ['Python', 'python']
+    ['Python', 'python'],
+    ['Ruby', 'ruby'],
   ];
 
   const expectedResponses = ['Hello instantOnDemoUser', 'AU', 'Alice Alison', '[]', 'Australia Historical File'];
