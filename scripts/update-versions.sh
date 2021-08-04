@@ -32,12 +32,12 @@ for lang in "${!languages[@]}"; do
     tests_folder="tests/${lang}/"
     sample_app_folder="sample-apps/${lang}/"
 
-    diff=$(git diff --name-only "$branch_base" :!$templates_folder/README.mustache)
+    diff=$(git diff --name-only "$branch_base")
 
     if [[ \
         $diff =~ $spec_file || \
         $diff =~ $config_file || \
-        $diff =~ $templates_folder || \
+        ($diff =~ $templates_folder && !($diff =~ "${templates_folder}README.mustache")) || \
         $diff =~ $tests_folder || \
         $diff =~ $sample_app_folder \
     ]]; then
