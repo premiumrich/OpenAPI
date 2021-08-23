@@ -75,6 +75,13 @@ pipelines:
         - step: &run-functional-tests
             name: Run functional tests
             image: node:14-buster
+            caches:
+              - javascript-sdk-node
+              - composer
+              - pip
+              - maven
+              - ruby-sdk-bundler
+              - dotnetcore
             script:
               - bash automation/install-dependencies.sh
               - npm install

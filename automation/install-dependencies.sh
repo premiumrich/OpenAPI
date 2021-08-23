@@ -24,7 +24,18 @@ apt-get install -y python3-pip
 cd ../../sdk-python/sample-app/
 python -m pip install -r requirements.txt
 
-printf "\n[Ruby SDK] Installing for sample app\n"
+printf "\n[Ruby SDK] Installing dependencies for sample app\n"
 apt-get install -y ruby bundler
 cd ../../sdk-ruby/sample-app/
 bundle install
+
+printf "\n[Java SDK] Installing dependencies for sample app\n"
+apt-get -y install default-jdk maven
+cd ../../sdk-java/sample-app/
+mvn package
+
+printf "\n[C# .NET Core SDK] Installing dependencies for sample app\n"
+wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb 
+apt-get update
+apt-get install -y apt-transport-https dotnet-sdk-3.1

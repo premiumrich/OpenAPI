@@ -4,6 +4,7 @@ const chrome = require('selenium-webdriver/chrome');
 const childProcess = require('child_process');
 const waitPort = require('wait-port');
 const killPort = require('kill-port');
+const killProcess = require('tree-kill');
 
 class SampleAppDriver {
   constructor() {
@@ -30,38 +31,55 @@ class SampleAppDriver {
   }
 
   /**
-   * Start a sample app and wait for the port to become accessible
+   * Start a sample app, wait for the port to become accessible and load index page of sample app
    * @param {string} language
    * @param {boolean} isApiKeySet
-   */
-  async startApp(language, isApiKeySet) {
-    this.appProcess = childProcess.spawn('bash', [
-      'automation/start-sample-app.sh',
-      language,
-      isApiKeySet ? 'withkey' : '',
-    ]);
-    await waitPort({ host: 'localhost', port: this.port, timeout: 1000, output: 'silent' });
-  }
-
-  /**
-   * Load index page of sample app, click all run buttons, and obtain responses
-   * @returns {string[]} responses in linear sequence from top to bottom of index page
+   * @throws {Error} If port is occupied before start
    * @throws {Error} If driver has not been built
    * @throws {Error} If sample app is not running
    */
-  async getResponses() {
+  async startApp(language, isApiKeySet) {
+    const isPortOpen = await waitPort({ host: 'localhost', port: this.port, timeout: 100, output: 'silent' });
+    if (isPortOpen) {
+      throw new Error(`The port :${this.port} is occupied`);
+    }
+    this.appProcess = childProcess.spawn(
+      'bash',
+      ['automation/start-sample-app.sh', language, isApiKeySet ? 'withkey' : ''],
+      { stdio: 'inherit' }
+    );
+    await waitPort({ host: 'localhost', port: this.port, timeout: 20000, output: 'silent' });
+
     if (!this.driver) {
       throw new Error('Driver has not been built yet');
     }
     if (!this.appProcess || this.appProcess.killed) {
       throw new Error('Sample app is not running');
     }
-
     await this.driver.get(`http://localhost:${this.port}`);
     await this.driver.wait(until.elementLocated(By.className('header-description')), 1000);
+  }
 
+  /**
+   * Get title text of the current page
+   * @returns {Promise<string>} page title text
+   */
+  async getTitleText() {
+    const titleElement = await this.driver.findElement(By.className('header-description'));
+    return titleElement.getText();
+  }
+
+  /**
+   * Click all run buttons, and obtain responses
+   * @returns {string[]} responses in linear sequence from top to bottom of index page
+   */
+  async getResponses() {
     const runButtons = await this.driver.findElements(By.className('codeblock-header-button'));
-    await Promise.all(runButtons.map((button) => button.click()));
+    for (let i = 0; i < runButtons.length; i++) {
+      // eslint-disable-next-line no-await-in-loop
+      await runButtons[i].click();
+    }
+
     await Promise.all(
       runButtons.map(async (button) => {
         let isResponseReceived = false;
@@ -86,9 +104,14 @@ class SampleAppDriver {
       throw new Error('Sample app is not running');
     }
     if (process.platform === 'linux') {
-      childProcess.spawnSync('fuser', ['-k', `${this.port}/tcp`], { timeout: 1000 });
+      killProcess(this.appProcess.pid);
     } else {
       await killPort(this.port, 'tcp');
+    }
+    let isPortOpen = true;
+    while (isPortOpen) {
+      // eslint-disable-next-line no-await-in-loop
+      isPortOpen = await waitPort({ host: 'localhost', port: this.port, timeout: 500, output: 'silent' });
     }
   }
 
