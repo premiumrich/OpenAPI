@@ -2,7 +2,7 @@
 
 generatorName: csharp-netcore
 packageName: Trulioo.SDK
-artifactVersion: 4.0.1
+artifactVersion: 4.0.2
 projectDescription: Trulioo C# .NET Core SDK
 validatable: false
 licenseId: Apache-2.0

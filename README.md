@@ -19,7 +19,7 @@ File/Folder                         | Description
 `sample-apps/`                      | Sample apps for every SDK
 `scripts/`                          | Miscellaneous helper scripts
 `templates/`                        | Mustache templates and other supporting files for every SDK
-`tests/`                            | Unit tests for every SDK
+`tests/unit/`                       | Unit tests for every SDK
 `tests/functional/`                 | Functional tests for every SDK sample app
 `bitbucket-pipelines.yml`           | Bitbucket pipelines for CI/CD
 `developer.yaml`                    | Trulioo OpenAPI 3.0 specification that gets automatically updated

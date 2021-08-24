@@ -53,13 +53,13 @@ for lang in "${!languages[@]}"; do
 
     echo "[${languages[$lang]} SDK] Checking for changes..."
     templates_folder="templates/${lang}/"
-    tests_folder="tests/${lang}/"
+    unit_tests_folder="tests/unit/${lang}/"
     sample_app_folder="sample-apps/${lang}/"
     if ! [[ \
         $diff =~ $spec_file || \
         $diff =~ $config_file || \
         $diff =~ $templates_folder || \
-        $diff =~ $tests_folder || \
+        $diff =~ $unit_tests_folder || \
         $diff =~ $sample_app_folder \
     ]]; then
         echo "[${languages[$lang]} SDK] No changes, skipping update"

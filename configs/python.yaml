@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.5
+artifactVersion: 1.0.6
 generatorName: python
 packageName: trulioo_sdk
 projectDescription: Trulioo Python SDK

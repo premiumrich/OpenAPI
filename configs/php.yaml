@@ -1,6 +1,6 @@
 '!include': ./shared/common.yaml
 
-artifactVersion: 1.0.4
+artifactVersion: 1.0.5
 generatorName: php
 packageName: trulioo/trulioo-sdk
 projectDescription: Trulioo PHP SDK

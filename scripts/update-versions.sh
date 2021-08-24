@@ -29,7 +29,7 @@ for lang in "${!languages[@]}"; do
 
     echo "[${languages[$lang]} SDK] Checking for changes..."
     templates_folder="templates/${lang}/"
-    tests_folder="tests/${lang}/"
+    unit_tests_folder="tests/unit/${lang}/"
     sample_app_folder="sample-apps/${lang}/"
 
     diff=$(git diff --name-only "$branch_base")
@@ -38,7 +38,7 @@ for lang in "${!languages[@]}"; do
         $diff =~ $spec_file || \
         $diff =~ $config_file || \
         ($diff =~ $templates_folder && !($diff =~ "${templates_folder}README.mustache")) || \
-        $diff =~ $tests_folder || \
+        $diff =~ $unit_tests_folder || \
         $diff =~ $sample_app_folder \
     ]]; then
         echo "[${languages[$lang]} SDK] Detected changes"
